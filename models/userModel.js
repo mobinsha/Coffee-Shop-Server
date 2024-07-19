@@ -12,9 +12,12 @@ function getAllUsers(callback) {
 
 function getUserById (id , callback){
     dbConnection.query(
-        'SELECT * FROM `users` WHERE id = ? ',
+        'SELECT * FROM `users` WHERE `id` = ?',
         [id],
-        callback
+        (err, result) => {
+            if (err) return callback(err, null);
+            callback(null, result[0]);
+        }
     )
 }
 
@@ -48,45 +51,44 @@ function addUser(userData, callback){
 }
 
 
-// function userUpdate (userID ,userData ,callback){
-//     dbConnection.query(
-//         'UPDATE users SET ? WHERE id = ?',
-//         [userData, userID],
-//         (err, result) => {
-//             if (err) {
-//                 return callback(err, null);
-//             }
-//             callback(null, result.affectedRows);
-//         }
-//     )
-// }
+function userUpdate (userID ,userData ,callback){
+    getUserById(userID, (err, currentUser) => {
+        if (err) return callback(err, null);
+        if (!currentUser) return callback(new Error('User not found'), null);
 
-function updateUser(userId, userData, callback) {
-    // ساختن کوئری دینامیک
-    let fields = [];
-    let values = [];
-    for (const [key, value] of Object.entries(userData)) {
-        fields.push(`${key} = ?`);
-        values.push(value);
-    }
-    values.push(userId); // اضافه کردن userId به لیست مقادیر
-
-    const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
-
-    dbConnection.query(sql, values, (err, result) => {
-        if (err) {
-            console.error(err);
-            callback(err, null);
-            return;
+        const updatedUser = {
+            userName: userData.userName || currentUser.userName,
+            fullName: userData.fullName || currentUser.fullName,
+            email: userData.email || currentUser.email,
+            phoneNumber: userData.phoneNumber || currentUser.phoneNumber,
+            gender: userData.gender || currentUser.gender,
+            permission: userData.permission || currentUser.permission
         }
-        callback(null, result.affectedRows); // تعداد ردیف‌های تحت تأثیر برگشت داده می‌شود
+
+        dbConnection.query(
+            'UPDATE `users` ' +
+            'SET `userName` = ?,' +
+            ' `fullName` = ?,' +
+            ' `email` = ?,' +
+            ' `phoneNumber` = ?,' +
+            ' `gender` = ?,' +
+            ' `permission` = ?' +
+            ' WHERE `id` = ?',
+            [updatedUser.userName, updatedUser.fullName, updatedUser.email,
+                updatedUser.phoneNumber, updatedUser.gender, updatedUser.permission, userID],
+            (err, result) => {
+                if (err) return callback(err, null);
+                callback(null, result);
+            }
+        )
     });
 }
+
 
 module.exports = {
     getAllUsers,
     getUserById,
     addUser,
     deleteUser,
-    updateUser
+    userUpdate
 }

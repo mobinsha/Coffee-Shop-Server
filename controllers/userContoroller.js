@@ -25,6 +25,7 @@ function getUserById(req, res) {
     });
 }
 
+
 function addUser (req, res) {
     const {userName, fullName, email, phoneNumber, gender, permission } = req.body;
 
@@ -42,24 +43,15 @@ function addUser (req, res) {
 
 
 function userUpdate(req, res) {
-    const updateUserId = req.body.id
-    const userData = res.body
-    const {userName, fullName, email, phoneNumber, gender, permission } = req.body;
+    const userId = req.body.id;
+    const userData = req.body;
 
-    if (!updateUserId) {
-        return res.status(400).json({ error: 'User ID is required' });
-    }
-
-    userModel.userUpdate(updateUserId,{userName, fullName, email, phoneNumber, gender, permission}, (err, result) => {
-        if (err) {
-            return res.status(500).json(console.log(err));
-        } else if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'User not found' });
-        } else {
-            return res.status(200).json({ message: 'User updated successfully' });
-        }
+    userModel.userUpdate(userId, userData, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'User updated successfully' });
     });
 }
+
 
 function deleteUser(req, res) {
     const deleteUserId = req.body.id;
@@ -73,12 +65,6 @@ function deleteUser(req, res) {
         }
     });
 }
-
-
-
-
-
-
 
 
 module.exports = {
