@@ -27,13 +27,13 @@ function getUserById(req, res) {
 
 
 function addUser (req, res) {
-    const {userName, fullName, email, phoneNumber, gender, permission } = req.body;
+    const {userName, password, email, fullName, phoneNumber, permission} = req.body;
 
-    if (!userName || !fullName || !email || !phoneNumber || !gender || !permission) {
+    if (!userName || !password || !email || !fullName || !phoneNumber || !permission) {
         return res.status(400).json({ error: 'fill all fields ' });
     }
 
-    userModel.addUser({userName, fullName, email, phoneNumber, gender, permission},(err, user) => {
+    userModel.addUser({userName, password, email, fullName, phoneNumber, permission},(err, user) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }

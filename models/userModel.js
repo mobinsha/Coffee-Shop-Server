@@ -38,9 +38,13 @@ function deleteUser (id , callback){
 
 function addUser(userData, callback){
     dbConnection.query(
-        'INSERT INTO `users` (`id`, `userName`, `fullName`, `email`, `phoneNumber`, `gender`, `permission`, `createdAt`) ' +
-        'VALUES (NULL, ?, ?, ?, ?, ?, ?, current_timestamp())',
-        [userData.userName, userData.fullName, userData.email, userData.phoneNumber, userData.gender, userData.permission],
+        'INSERT INTO `users` (`id`, `userName`,' +
+        ' `password`, `email`,' +
+        ' `fullName`, `phoneNumber`,' +
+        ' `permission`, `accountStatus`,' +
+        ' `createdAt`, `updatedAt`) ' +
+        'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())',
+        [userData.userName, userData.password, userData.email, userData.fullName, userData.phoneNumber, 'guest', 'active'],
         (error, results) => {
             if (error) {
                 return callback(error);
@@ -58,24 +62,24 @@ function userUpdate (userID ,userData ,callback){
 
         const updatedUser = {
             userName: userData.userName || currentUser.userName,
-            fullName: userData.fullName || currentUser.fullName,
+            password: userData.password || currentUser.password,
             email: userData.email || currentUser.email,
+            fullName : userData.fullName || currentUser.fullName,
             phoneNumber: userData.phoneNumber || currentUser.phoneNumber,
-            gender: userData.gender || currentUser.gender,
             permission: userData.permission || currentUser.permission
         }
 
         dbConnection.query(
             'UPDATE `users` ' +
             'SET `userName` = ?,' +
-            ' `fullName` = ?,' +
+            ' `password` = ?,' +
             ' `email` = ?,' +
+            ' `fullName` = ?,' +
             ' `phoneNumber` = ?,' +
-            ' `gender` = ?,' +
             ' `permission` = ?' +
             ' WHERE `id` = ?',
-            [updatedUser.userName, updatedUser.fullName, updatedUser.email,
-                updatedUser.phoneNumber, updatedUser.gender, updatedUser.permission, userID],
+            [updatedUser.userName, updatedUser.password, updatedUser.email,
+                updatedUser.fullName, updatedUser.phoneNumber, updatedUser.permission, userID],
             (err, result) => {
                 if (err) return callback(err, null);
                 callback(null, result);

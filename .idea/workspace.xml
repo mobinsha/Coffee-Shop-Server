@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +23,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2jSqTyp8fut0I3E0Sen5L0YD7JX" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -34,7 +37,7 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
     "javascript.nodejs.core.library.configured.version": "20.15.0",
-    "javascript.nodejs.core.library.typings.version": "20.14.11",
+    "javascript.nodejs.core.library.typings.version": "20.14.13",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -57,7 +60,10 @@
       <updated>1721390837150</updated>
       <workItem from="1721390838291" duration="162000" />
       <workItem from="1721391010997" duration="4199000" />
-      <workItem from="1721397565063" duration="1910000" />
+      <workItem from="1721397565063" duration="2812000" />
+      <workItem from="1721475197699" duration="1619000" />
+      <workItem from="1721564139612" duration="678000" />
+      <workItem from="1722166087383" duration="1268000" />
     </task>
     <servers />
   </component>

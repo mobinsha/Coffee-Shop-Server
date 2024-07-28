@@ -3,8 +3,6 @@ const app = express()
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const _ = require('lodash')
-const userController = require("./controllers/userContoroller");
 const userRouter = require("./routes/userRouter");
 
 app.use(cors({
