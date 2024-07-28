@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const userRouter = require("./routes/userRouter");
+const servicesRouter = require("./routes/servicesRouter");
 
 app.use(cors({
     origin: 'http://localhost:5173'
@@ -12,6 +13,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/users' , userRouter)
+app.use('/api/services' , servicesRouter)
 
 
 
