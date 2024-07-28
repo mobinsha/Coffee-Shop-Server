@@ -19,7 +19,7 @@ function getServicesById (req, res) {
             return res.status(500).json({ error: err.message });
         }
         if (!service) {
-            return res.status(404).json({ error: 'Server not found' });
+            return res.status(404).json({ error: 'service not found' });
         }
         res.json(service)
     });
@@ -30,7 +30,7 @@ function addService (req, res) {
     const {imageAddress , name} = req.body;
 
     if (!imageAddress || !name) {
-        return res.status(400).json({ error: 'fill all fields ' });
+        return res.status(400).json({ error: 'Fill all fields ' });
     }
 
     servicesModel.addService({imageAddress , name},(err, service) => {
