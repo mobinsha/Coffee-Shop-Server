@@ -1,69 +1,91 @@
-const userModel = require("../models/userModel")
-const {result} = require("lodash/object");
+const userModel = require("../models/userModel");
+const { validationResult } = require('express-validator');
 
 
-function getAllUsers(req, res) {
-    userModel.getAllUsers((err, user) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(user);
+function sendResponse(res, statusCode, message, data = {}, error = null) {
+    res.status(statusCode).json({
+        status: statusCode < 400,
+        message,
+        data,
+        error
     });
 }
 
 
-function getUserById(req, res) {
-    const userId = req.params.id
-    userModel.getUserById(userId, (err, user) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.json(user)
-    });
+async function getAllUsers(req, res) {
+    try {
+        const users = await userModel.getAllUsers();
+        sendResponse(res, 200, 'موفقیت‌آمیز', users);
+    } catch (err) {
+        sendResponse(res, 500, 'خطای سرور', err.message);
+    }
 }
 
 
-function addUser (req, res) {
-    const {userName, password, email, fullName, phoneNumber, permission} = req.body;
+async function getUserById(req, res) {
+    const userId = req.params.id;
+    try {
+        const user = await userModel.getUserById(userId);
+        sendResponse(res, 200, 'موفقیت‌آمیز', user);
 
-    if (!userName || !password || !email || !fullName || !phoneNumber || !permission) {
-        return res.status(400).json({ error: 'fill all fields ' });
+    } catch (err) {
+        if (err.message === 'کاربر یافت نشد.') {
+            sendResponse(res, 404, err.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
+        }
+    }
+}
+
+
+async function deleteUser(req, res) {
+    const deleteUserId = req.body.id;
+    try {
+        await userModel.deleteUser(deleteUserId);
+        sendResponse(res, 200, 'کاربر با موفقیت حذف شد');
+    } catch (err) {
+        if (err.message === 'کاربر یافت نشد.') {
+            sendResponse(res, 404, err.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
+        }
+    }
+}
+
+
+async function addUser(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return sendResponse(res, 400, 'خطاهای اعتبارسنجی', {}, errors.array());
     }
 
-    userModel.addUser({userName, password, email, fullName, phoneNumber, permission},(err, user) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.status(201).json({massage : 'User added successfully'});
-    });
+    const { userName, password, email, fullName, phoneNumber, permission } = req.body;
+    try {
+        await userModel.addUser({ userName, password, email, fullName, phoneNumber, permission });
+        sendResponse(res, 201, 'کاربر با موفقیت اضافه شد');
+    } catch (error) {
+        sendResponse(res, 500, 'خطای سرور', error.message);
+    }
 }
 
 
-function userUpdate(req, res) {
+async function userUpdate(req, res) {
     const userId = req.body.id;
     const userData = req.body;
 
-    userModel.userUpdate(userId, userData, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'User updated successfully' });
-    });
-}
+    try {
+        await userModel.userUpdate(userId, userData);
+        sendResponse(res, 200, 'کاربر با موفقیت به‌روزرسانی شد');
 
-
-function deleteUser(req, res) {
-    const deleteUserId = req.body.id;
-    userModel.deleteUser(deleteUserId, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Server Error' });
-        } else if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'User not found' });
+    } catch (error) {
+        if (error.message === 'کاربر یافت نشد.') {
+            sendResponse(res, 404, error.message);
+        } else if (error.message === 'اطلاعات جدید وارد کنید') {
+            sendResponse(res, 400, error.message);
         } else {
-            return res.status(200).json({ message: 'User deleted successfully' });
+            sendResponse(res, 500, 'خطای سرور', {}, error.message);
         }
-    });
+    }
 }
 
 
@@ -73,5 +95,4 @@ module.exports = {
     addUser,
     deleteUser,
     userUpdate
-}
-
+};
