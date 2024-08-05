@@ -4,8 +4,8 @@ const {dbConnection} = require("../config/dbConnection");
 async function getAllServices() {
     return new Promise((resolve,reject) => {
         dbConnection.query('SELECT * FROM `services`', (err, result) => {
-            if (err) reject(err)
-            resolve(result)
+            if (err) return reject(err)
+            else resolve(result)
         })
     })
 }
@@ -19,7 +19,7 @@ function getServicesById (id){
             (err, result)=> {
                 if (err) return reject(err);
                 if (result.length === 0) return reject(new Error('سروریس مورد نظر یافت نشد.'));
-                resolve(result);
+                else resolve(result);
             })
     })
 }
@@ -52,6 +52,7 @@ async function deleteService (id){
         )
     })
 }
+
 
 module.exports = {
     getAllServices,

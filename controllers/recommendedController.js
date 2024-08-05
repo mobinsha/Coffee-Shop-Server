@@ -1,65 +1,80 @@
 const recommendedModel = require("../models/recommendedModel")
-const userModel = require("../models/userModel");
+const {validationResult} = require("express-validator");
 
 
-function getAllRecommended (req, res) {
-    recommendedModel.getAllRecommended((err, recommended) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(recommended);
+function sendResponse(res, statusCode, message, data = {}, error = null) {
+    res.status(statusCode).json({
+        status: statusCode < 400,
+        message,
+        data,
+        error
     });
 }
 
 
-function getRecommendedById (req, res) {
+
+async function getAllRecommended (req, res) {
+    try{
+        const recommended = await recommendedModel.getAllRecommended()
+        sendResponse(res, 200, 'موفقیت‌آمیز', recommended);
+    } catch (err) {
+        sendResponse(res, 500, 'خطای سرور', err.message);
+    }
+}
+
+
+async function getRecommendedById (req, res) {
     const recommendedId = req.params.id
-    recommendedModel.getRecommendedById(recommendedId, (err, recommended) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+
+    try{
+        const recommended = await recommendedModel.getRecommendedById(recommendedId)
+        sendResponse(res, 200, 'موفقیت‌آمیز', recommended);
+    } catch (err) {
+        if (err === 'محصول مورد نظر یافت نشد.'){
+            sendResponse(res, 404, err.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
         }
-        if (!recommended) {
-            return res.status(404).json({ error: 'recommended not found' });
-        }
-        res.json(recommended)
-    });
+    }
 }
 
 
-function addRecommended (req, res) {
-    const {imageAddress, name, shortTitle, price, description} = req.body;
+async function addRecommended (req, res) {
 
-    if (!imageAddress || !name || !shortTitle || !price || !description) {
-        return res.status(400).json({ error: 'Fill all fields ' });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return sendResponse(res, 400, 'خطاهای اعتبارسنجی', {}, errors.array());
     }
 
-    recommendedModel.addRecommended({imageAddress, name, shortTitle, price, description},(err, recommended) => {
-        if (err) {
-            return res.status(500).json({ error: err.message })
-        }
-        res.status(201).json({massage : 'recommended added successfully'});
-
-    });
+    const {imageAddress, name, shortTitle, price, description} = req.body;
+    try {
+        const newRecommended = await recommendedModel.addRecommended({imageAddress, name, shortTitle, price, description})
+        sendResponse(res, 201, newRecommended,'محصول با موفقیت اضافه شد');
+    } catch (err) {
+        sendResponse(res, 500, 'خطای سرور', err.message);
+    }
 }
 
 
-function deleteRecommended (req, res) {
+async function deleteRecommended(req, res) {
     const deleteRecommendedId = req.body.id;
-    recommendedModel.deleteRecommended(deleteRecommendedId , (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Server Error' });
-        } else if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Recommended not found' });
+    try {
+        await recommendedModel.deleteRecommended(deleteRecommendedId);
+        sendResponse(res, 200, 'محصول با موفقیت حذف شد');
+    } catch (err) {
+        if (err.message === 'محصول یافت نشد.') {
+            sendResponse(res, 404, err.message);
         } else {
-            return res.status(200).json({ message: 'Recommended deleted successfully' });
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
         }
-    });
+    }
 }
+
 
 
 module.exports = {
-    getRecommendedById,
     getAllRecommended,
-    deleteRecommended,
-    addRecommended
+    getRecommendedById,
+    addRecommended,
+    deleteRecommended
 }

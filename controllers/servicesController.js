@@ -48,7 +48,7 @@ async function addService (req, res) {
 
     try {
         const newService = await servicesModel.addService({imageAddress , name})
-        sendResponse(res, 201, 'سرویس با موفقیت اضافه شد');
+        sendResponse(res, 201, newService, 'سرویس با موفقیت اضافه شد');
     } catch (err) {
         sendResponse(res, 500, 'خطای سرور', err.message);
     }
@@ -73,6 +73,6 @@ async function deleteService(req, res) {
 module.exports = {
     getAllServices,
     getServicesById,
-    deleteService,
-    addService
+    addService,
+    deleteService
 }

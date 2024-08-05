@@ -5,10 +5,11 @@ async function getAllUsers() {
     return new Promise((resolve,reject) => {
         dbConnection.query('SELECT * FROM `users`', (err, result) => {
             if (err) return reject(err)
-            resolve(result)
+            else resolve(result)
         })
     })
 }
+
 
 function getUserById (id){
     return new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ function getUserById (id){
             (err, result)=> {
                 if (err) return reject(err);
                 if (result.length === 0) return reject(new Error('کاربر یافت نشد.'));
-                resolve(result);
+                else resolve(result);
             })
     })
 }
@@ -119,9 +120,9 @@ async function userUpdate (userID ,userData){
 module.exports = {
     getAllUsers,
     getUserById,
-    addUser,
-    deleteUser,
-    userUpdate,
     checkUserNameExists,
-    checkEmailExists
+    checkEmailExists,
+    deleteUser,
+    addUser,
+    userUpdate
 }

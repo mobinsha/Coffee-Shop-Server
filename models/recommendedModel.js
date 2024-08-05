@@ -1,63 +1,69 @@
 const {dbConnection} = require("../config/dbConnection");
 
 
-function getAllRecommended(callback) {
-    dbConnection.query(
-        'SELECT * FROM `recommended`' ,
-        callback
-    )
+async function getAllRecommended() {
+    return new Promise((resolve,reject) => {
+        dbConnection.query('SELECT * FROM `recommended`', (err, result) => {
+            if (err) return reject(err)
+            else resolve(result)
+        })
+    })
 }
 
 
-function getRecommendedById (id , callback){
-    dbConnection.query(
-        'SELECT * FROM `recommended` WHERE `id` = ?',
-        [id],
-        (err, result) => {
-            if (err) return callback(err, null);
-            callback(null, result[0]);
-        }
-    )
+function getRecommendedById (id){
+    return new Promise((resolve, reject) => {
+        dbConnection.query(
+            'SELECT * FROM `recommended` WHERE `id` = ?',
+            [id],
+            (err, result)=> {
+                if (err) return reject(err);
+                if (result.length === 0) return reject(new Error('محصول مورد نظر یافت نشد.'));
+                else resolve(result);
+            })
+    })
 }
 
 
-function addRecommended(RecommendedData, callback){
-    dbConnection.query('INSERT INTO `recommended`(`id`, `imageAddress`,`name`,`shortTitle`, `price`, `description`)' +
-        ' VALUES (NULL,?, ?, ?, ?, ?)',
+async function addRecommended(RecommendedData){
+    return new Promise((resolve, reject) => {
+        dbConnection.query('INSERT INTO `recommended`(`id`, `imageAddress`,`name`,' +
+            '`shortTitle`, `price`, `description`)' +
+            ' VALUES (NULL,?, ?, ?, ?, ?)',
 
-        [RecommendedData.imageAddress,
-            RecommendedData.name,
-            RecommendedData.shortTitle,
-            RecommendedData.price,
-            RecommendedData.description],
+            [RecommendedData.imageAddress,
+                RecommendedData.name,
+                RecommendedData.shortTitle,
+                RecommendedData.price,
+                RecommendedData.description],
 
-        (error, results) => {
-            if (error) {
-                return callback(error);
+            (err, results) => {
+                if (err) return reject(err);
+                else resolve({ id: results.insertId, ...RecommendedData });
             }
-            callback(null, { id: results.insertId, ...RecommendedData });
-        }
-    );
+        );
+    })
 }
 
 
-function deleteRecommended (id , callback){
-    dbConnection.query(
-        'DELETE FROM `recommended` WHERE `recommended`.`id` = ?',
-        [id],
-        (err, result) => {
-            if (err) {
-                return callback(err, null);
+async function deleteRecommended (id){
+    return new Promise((resolve, reject) => {
+        dbConnection.query(
+            'DELETE FROM recommended WHERE `recommended`.`id` = ?',
+            [id],
+            (err, result) => {
+                if (err) return reject(err);
+                if (result.affectedRows === 0) return reject(new Error('محصول مورد نظر یافت نشد.'));
+                else resolve(result);
             }
-            callback(null, result);
-        }
-    )
+        )
+    })
 }
 
 
 module.exports = {
-    getRecommendedById,
     getAllRecommended,
-    deleteRecommended,
-    addRecommended
+    getRecommendedById,
+    addRecommended,
+    deleteRecommended
 }
