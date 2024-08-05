@@ -1,58 +1,72 @@
 const servicesModel = require("../models/servicesModel")
+const {validationResult} = require("express-validator");
 const userModel = require("../models/userModel");
 
-
-function getAllServices (req, res) {
-    servicesModel.getAllServices((err, services) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(services);
+function sendResponse(res, statusCode, message, data = {}, error = null) {
+    res.status(statusCode).json({
+        status: statusCode < 400,
+        message,
+        data,
+        error
     });
 }
 
 
-function getServicesById (req, res) {
+async function getAllServices (req, res) {
+    try{
+        const service = await servicesModel.getAllServices()
+        sendResponse(res, 200, 'موفقیت‌آمیز', service);
+    } catch (err) {
+        sendResponse(res, 500, 'خطای سرور', err.message);
+    }
+}
+
+
+async function getServicesById (req, res) {
     const servicesId = req.params.id
-    servicesModel.getServicesById(servicesId, (err, service) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+
+    try{
+        const service = await servicesModel.getServicesById(servicesId)
+        sendResponse(res, 200, 'موفقیت‌آمیز', service);
+    } catch (err) {
+        if (err === 'سروریس مورد نظر یافت نشد.'){
+            sendResponse(res, 404, err.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
         }
-        if (!service) {
-            return res.status(404).json({ error: 'service not found' });
-        }
-        res.json(service)
-    });
+    }
 }
 
 
-function addService (req, res) {
-    const {imageAddress , name} = req.body;
-
-    if (!imageAddress || !name) {
-        return res.status(400).json({ error: 'Fill all fields ' });
+async function addService (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return sendResponse(res, 400, 'خطاهای اعتبارسنجی', {}, errors.array());
     }
 
-    servicesModel.addService({imageAddress , name},(err, service) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.status(201).json({massage : 'Service added successfully'});
-    });
+    const {imageAddress , name} = req.body;
+
+    try {
+        const newService = await servicesModel.addService({imageAddress , name})
+        sendResponse(res, 201, 'سرویس با موفقیت اضافه شد');
+    } catch (err) {
+        sendResponse(res, 500, 'خطای سرور', err.message);
+    }
 }
 
 
-function deleteService (req, res) {
+async function deleteService(req, res) {
     const deleteServiceId = req.body.id;
-    servicesModel.deleteService(deleteServiceId , (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Server Error' });
-        } else if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Service not found' });
+    try {
+        await servicesModel.deleteService(deleteServiceId);
+        sendResponse(res, 200, 'سرویس با موفقیت حذف شد');
+    } catch (err) {
+        if (err.message === 'سرویس یافت نشد.') {
+            sendResponse(res, 404, err.message);
         } else {
-            return res.status(200).json({ message: 'Service deleted successfully' });
+            sendResponse(res, 500, 'خطای سرور', {}, err.message);
         }
-    });
+    }
 }
 
 

@@ -4,7 +4,7 @@ const {dbConnection} = require('../config/dbConnection')
 async function getAllUsers() {
     return new Promise((resolve,reject) => {
         dbConnection.query('SELECT * FROM `users`', (err, result) => {
-            if (err) reject(err)
+            if (err) return reject(err)
             resolve(result)
         })
     })
