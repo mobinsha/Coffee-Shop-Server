@@ -54,9 +54,36 @@ async function deleteService (id){
 }
 
 
+async function updateService (serviceId ,serviceData){
+
+    const currentDataArray  = await getServicesById(serviceId)
+    if (currentDataArray.length === 0) {
+        throw new Error('سرویس یافت نشد.');
+    }
+    const currentData = currentDataArray[0]
+
+    const serviceUpdate = {
+        imageAddress: serviceData.imageAddress || currentData.imageAddress,
+        name: serviceData.name || currentData.name,
+    }
+
+    return new Promise((resolve, reject) => {
+        dbConnection.query('UPDATE `services` SET `imageAddress` = ?, `name` = ?' +
+            ' WHERE `services`.`id` = ?',
+            [serviceUpdate.imageAddress, serviceUpdate.name, serviceId],
+            (err, result) => {
+                if (err) return reject(err)
+                if (result.changedRows === 0) return reject(new Error('اطلاعات جدید وارد کنید'));
+                else resolve(result)
+            })
+    })
+}
+
+
 module.exports = {
     getAllServices,
     getServicesById,
     addService,
-    deleteService
+    deleteService,
+    updateService
 }

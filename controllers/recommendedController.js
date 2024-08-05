@@ -1,5 +1,6 @@
 const recommendedModel = require("../models/recommendedModel")
 const {validationResult} = require("express-validator");
+const servicesModel = require("../models/servicesModel");
 
 
 function sendResponse(res, statusCode, message, data = {}, error = null) {
@@ -10,7 +11,6 @@ function sendResponse(res, statusCode, message, data = {}, error = null) {
         error
     });
 }
-
 
 
 async function getAllRecommended (req, res) {
@@ -71,10 +71,30 @@ async function deleteRecommended(req, res) {
 }
 
 
+async function updateRecommended(req, res) {
+    const recommendedId = req.body.id;
+    const recommendedData = req.body;
+
+    try {
+        await recommendedModel.updateRecommended(recommendedId, recommendedData);
+        sendResponse(res, 200, 'محصول با موفقیت به‌روزرسانی شد');
+
+    } catch (error) {
+        if (error.message === 'محصول یافت نشد.') {
+            sendResponse(res, 404, error.message);
+        } else if (error.message === 'اطلاعات جدید وارد کنید') {
+            sendResponse(res, 400, error.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, error.message);
+        }
+    }
+}
+
 
 module.exports = {
     getAllRecommended,
     getRecommendedById,
     addRecommended,
-    deleteRecommended
+    deleteRecommended,
+    updateRecommended
 }

@@ -61,9 +61,45 @@ async function deleteRecommended (id){
 }
 
 
+async function updateRecommended (recommendedId, recommendedData){
+
+    const currentDataArray  = await getRecommendedById(recommendedId)
+    if (currentDataArray.length === 0) {
+        throw new Error('سرویس یافت نشد.');
+    }
+    const currentData = currentDataArray[0]
+
+    const recommendedUpdate = {
+        imageAddress: recommendedData.imageAddress || currentData.imageAddress,
+        name: recommendedData.name || currentData.name,
+        shortTitle: recommendedData.shortTitle || currentData.shortTitle,
+        price: recommendedData.price || currentData.price,
+        description: recommendedData.description || currentData.description,
+    }
+
+    return new Promise((resolve, reject) => {
+        dbConnection.query('UPDATE `recommended` SET ' +
+            '`imageAddress` = ?,' +
+            ' `name` = ?,' +
+            ' `shortTitle` = ?,' +
+            ' `price` = ?,' +
+            ' `description` = ?' +
+            ' WHERE `recommended`.`id` = ?',
+            [recommendedUpdate.imageAddress, recommendedUpdate.name, recommendedUpdate.shortTitle,
+                recommendedUpdate.price, recommendedUpdate.description, recommendedId],
+            (err, result) => {
+                if (err) return reject(err)
+                if (result.changedRows === 0) return reject(new Error('اطلاعات جدید وارد کنید'));
+                else resolve(result)
+            })
+    })
+}
+
+
 module.exports = {
     getAllRecommended,
     getRecommendedById,
     addRecommended,
-    deleteRecommended
+    deleteRecommended,
+    updateRecommended
 }

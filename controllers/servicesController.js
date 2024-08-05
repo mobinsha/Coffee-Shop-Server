@@ -70,9 +70,30 @@ async function deleteService(req, res) {
 }
 
 
+async function updateService(req, res) {
+    const serviceId = req.body.id;
+    const serviceData = req.body;
+
+    try {
+        await servicesModel.updateService(serviceId, serviceData);
+        sendResponse(res, 200, 'سرویس با موفقیت به‌روزرسانی شد');
+
+    } catch (error) {
+        if (error.message === 'سرویس یافت نشد.') {
+            sendResponse(res, 404, error.message);
+        } else if (error.message === 'اطلاعات جدید وارد کنید') {
+            sendResponse(res, 400, error.message);
+        } else {
+            sendResponse(res, 500, 'خطای سرور', {}, error.message);
+        }
+    }
+}
+
+
 module.exports = {
     getAllServices,
     getServicesById,
     addService,
-    deleteService
+    deleteService,
+    updateService
 }
