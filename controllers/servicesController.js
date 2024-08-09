@@ -1,6 +1,6 @@
 const servicesModel = require("../models/servicesModel")
 const {validationResult} = require("express-validator");
-const userModel = require("../models/userModel");
+
 
 function sendResponse(res, statusCode, message, data = {}, error = null) {
     res.status(statusCode).json({

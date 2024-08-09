@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/recommendedController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/recommendedController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/servicesController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/servicesController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/recommendedModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/recommendedModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/blogsModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/blogsModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/servicesModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/servicesModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/servicesRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/servicesRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/userModel.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +35,7 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -98,7 +99,10 @@
       <workItem from="1722713231572" duration="3619000" />
       <workItem from="1722789211677" duration="7633000" />
       <workItem from="1722857600640" duration="2965000" />
-      <workItem from="1722866880235" duration="4348000" />
+      <workItem from="1722866880235" duration="4776000" />
+      <workItem from="1723118311019" duration="3282000" />
+      <workItem from="1723141973468" duration="1426000" />
+      <workItem from="1723213190365" duration="3807000" />
     </task>
     <servers />
   </component>

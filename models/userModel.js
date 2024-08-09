@@ -25,6 +25,19 @@ function getUserById (id){
 }
 
 
+async function checkUserExist(id){
+    return new Promise((resolve, reject) => {
+        dbConnection.query(
+            'SELECT id FROM `users` WHERE `id` = ?',
+            [id],
+            (err, result)=> {
+                if (err) return reject(err);
+                else resolve(result.length > 0);
+            })
+    })
+}
+
+
 async function checkUserNameExists(userName) {
     return await new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM users WHERE userName = ?', [userName], (err, rows) => {
@@ -120,6 +133,7 @@ async function userUpdate (userID ,userData){
 module.exports = {
     getAllUsers,
     getUserById,
+    checkUserExist,
     checkUserNameExists,
     checkEmailExists,
     deleteUser,

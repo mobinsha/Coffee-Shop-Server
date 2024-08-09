@@ -64,7 +64,7 @@ async function updateService (serviceId ,serviceData){
 
     const serviceUpdate = {
         imageAddress: serviceData.imageAddress || currentData.imageAddress,
-        name: serviceData.name || currentData.name,
+        name: serviceData.name || currentData.name
     }
 
     return new Promise((resolve, reject) => {
