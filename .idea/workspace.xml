@@ -7,7 +7,6 @@
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/dbConnection.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/dbConnection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/blogsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/blogsController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/recommendedController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/recommendedController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/servicesController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/servicesController.js" afterDir="false" />
@@ -16,14 +15,9 @@
       <change beforePath="$PROJECT_DIR$/models/recommendedModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/recommendedModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/servicesModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/servicesModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/userModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/blogsRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/blogsRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/recommendedRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommendedRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/servicesRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/servicesRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/userRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/userRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validations/blogValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/blogValidation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validations/recommendedValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/recommendedValidation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validations/serviceValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/serviceValidation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validations/userValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/userValidation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/untils/errorHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/errorHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/untils/responseController.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/responseController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/untils/sendError.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/sendError.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +109,7 @@
       <workItem from="1723118311019" duration="3282000" />
       <workItem from="1723141973468" duration="1426000" />
       <workItem from="1723213190365" duration="9299000" />
-      <workItem from="1723289213147" duration="3106000" />
+      <workItem from="1723289213147" duration="5343000" />
     </task>
     <servers />
   </component>

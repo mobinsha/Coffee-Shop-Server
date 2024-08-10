@@ -1,16 +1,14 @@
-const {dbConnection} = require("../config/dbConnection");
-const {SendError} = require('../untils/SendError')
-
+const { dbConnection } = require("../config/dbConnection");
+const { SendError } = require('../utils/SendError');
 
 async function getAllServices() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `services`', (err, result) => {
-            if (err) return reject(new SendError(500, 'خطای سرور'));
-            else resolve(result)
-        })
-    })
+            if (err) return reject(new SendError(500, 'Server error'));
+            else resolve(result);
+        });
+    });
 }
-
 
 function getServicesById(id) {
     return new Promise((resolve, reject) => {
@@ -18,27 +16,26 @@ function getServicesById(id) {
             'SELECT * FROM `services` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.length === 0) return reject(new SendError(404, 'سروریس مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.length === 0) return reject(new SendError(404, 'Service not found.'));
                 else resolve(result);
-            })
-    })
+            }
+        );
+    });
 }
-
 
 async function addService(serviceData) {
     return new Promise((resolve, reject) => {
-        dbConnection.query('INSERT INTO `services` (`id`, `imageAddress`,`name`)' +
+        dbConnection.query('INSERT INTO `services` (`id`, `imageAddress`, `name`)' +
             ' VALUES (NULL, ?, ?)',
             [serviceData.imageAddress, serviceData.name],
             (err, results) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                else resolve({id: results.insertId, ...serviceData});
+                if (err) return reject(new SendError(500, 'Server error'));
+                else resolve({ id: results.insertId, ...serviceData });
             }
         );
-    })
+    });
 }
-
 
 async function deleteService(id) {
     return new Promise((resolve, reject) => {
@@ -46,40 +43,37 @@ async function deleteService(id) {
             'DELETE FROM services WHERE `services`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.affectedRows === 0) return reject(new SendError(404, 'سروریس مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'Service not found.'));
                 else resolve(result);
             }
-        )
-    })
+        );
+    });
 }
 
-
 async function updateService(serviceId, serviceData) {
-
-    const currentDataArray = await getServicesById(serviceId)
+    const currentDataArray = await getServicesById(serviceId);
     if (currentDataArray.length === 0) {
-        throw new Error('سرویس یافت نشد.');
+        throw new SendError(404, 'Service not found.');
     }
-    const currentData = currentDataArray[0]
+    const currentData = currentDataArray[0];
 
     const serviceUpdate = {
         imageAddress: serviceData.imageAddress || currentData.imageAddress,
         name: serviceData.name || currentData.name
-    }
+    };
 
     return new Promise((resolve, reject) => {
         dbConnection.query('UPDATE `services` SET `imageAddress` = ?, `name` = ?' +
             ' WHERE `services`.`id` = ?',
             [serviceUpdate.imageAddress, serviceUpdate.name, serviceId],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.changedRows === 0) return reject(new SendError(400, 'اطلاعات جدید وارد کنید'));
-                else resolve(result)
-            })
-    })
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
+                else resolve(result);
+            });
+    });
 }
-
 
 module.exports = {
     getAllServices,
@@ -87,4 +81,4 @@ module.exports = {
     addService,
     deleteService,
     updateService
-}
+};

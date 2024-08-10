@@ -1,55 +1,50 @@
 const userModel = require("../models/userModel");
-const {validationResult} = require('express-validator');
-const {sendResponse} = require('../untils/responseController')
-
+const { validationResult } = require('express-validator');
+const { sendResponse } = require('../utils/responseController');
 
 async function getAllUsers(req, res, next) {
     try {
         const users = await userModel.getAllUsers();
-        sendResponse(res, 200, 'موفقیت‌آمیز', users);
+        sendResponse(res, 200, 'Success', users);
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
-
 
 async function getUserById(req, res, next) {
     const userId = req.params.id;
     try {
         const user = await userModel.getUserById(userId);
-        sendResponse(res, 200, 'موفقیت‌آمیز', user);
+        sendResponse(res, 200, 'Success', user);
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
-
 
 async function deleteUser(req, res, next) {
     const deleteUserId = req.body.id;
     try {
         await userModel.deleteUser(deleteUserId);
-        sendResponse(res, 200, 'کاربر با موفقیت حذف شد');
+        sendResponse(res, 200, 'User successfully deleted');
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
-
 
 async function addUser(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return sendResponse(res, 400, 'خطاهای اعتبارسنجی', {}, errors.array());
+        return sendResponse(res, 400, 'Validation errors', {}, errors.array());
     }
 
-    const {userName, password, email, fullName, phoneNumber, permission} = req.body;
+    const { userName, password, email, fullName, phoneNumber, permission } = req.body;
     try {
-        await userModel.addUser({userName, password, email, fullName, phoneNumber, permission});
-        sendResponse(res, 201, 'کاربر با موفقیت اضافه شد');
+        await userModel.addUser({ userName, password, email, fullName, phoneNumber, permission });
+        sendResponse(res, 201, 'User successfully added');
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
-
 
 async function userUpdate(req, res, next) {
     const userId = req.body.id;
@@ -57,13 +52,11 @@ async function userUpdate(req, res, next) {
 
     try {
         await userModel.userUpdate(userId, userData);
-        sendResponse(res, 200, 'کاربر با موفقیت به‌روزرسانی شد');
-
+        sendResponse(res, 200, 'User successfully updated');
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
-
 
 module.exports = {
     getAllUsers,

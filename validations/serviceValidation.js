@@ -1,15 +1,15 @@
-const {body} = require('express-validator')
-
+const { body } = require('express-validator');
 
 exports.validateAddService = [
     body('imageAddress')
         .matches(/\.(jpeg|jpg|gif|png)$/)
-        .withMessage('آدرس باید یک تصویر با فرمت jpg، jpeg، gif یا png باشد'),
+        .withMessage('The address must be an image in jpg, jpeg, gif, or png format.'),
+
     body('name')
         .notEmpty()
-        .withMessage('نام سرویس الزامی است.').bail()
-        .isLength({min: 2, max: 50})
-        .withMessage('نام باید بین 2 تا 50 کاراکتر باشد').bail()
+        .withMessage('Service name is required.').bail()
+        .isLength({ min: 2, max: 50 })
+        .withMessage('Name must be between 2 and 50 characters long.').bail()
         .matches(/^[a-zA-Z0-9 ]+$/)
-        .withMessage('نام فقط می‌تواند شامل حروف، اعداد و فاصله باشد'),
-]
+        .withMessage('Name can only contain letters, numbers, and spaces.'),
+];

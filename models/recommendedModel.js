@@ -1,15 +1,14 @@
-const {dbConnection} = require("../config/dbConnection");
-const {SendError} = require('../untils/SendError')
+const { dbConnection } = require("../config/dbConnection");
+const { SendError } = require('../utils/SendError');
 
 async function getAllRecommended() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `recommended`', (err, result) => {
-            if (err) return reject(new SendError(500, 'خطای سرور'));
-            else resolve(result)
-        })
-    })
+            if (err) return reject(new SendError(500, 'Server error'));
+            else resolve(result);
+        });
+    });
 }
-
 
 function getRecommendedById(id) {
     return new Promise((resolve, reject) => {
@@ -17,13 +16,13 @@ function getRecommendedById(id) {
             'SELECT * FROM `recommended` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.length === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.length === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
-            })
-    })
+            }
+        );
+    });
 }
-
 
 async function addRecommended(RecommendedData) {
     return new Promise((resolve, reject) => {
@@ -38,13 +37,12 @@ async function addRecommended(RecommendedData) {
                 RecommendedData.description],
 
             (err, results) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                else resolve({id: results.insertId, ...RecommendedData});
+                if (err) return reject(new SendError(500, 'Server error'));
+                else resolve({ id: results.insertId, ...RecommendedData });
             }
         );
-    })
+    });
 }
-
 
 async function deleteRecommended(id) {
     return new Promise((resolve, reject) => {
@@ -52,22 +50,20 @@ async function deleteRecommended(id) {
             'DELETE FROM recommended WHERE `recommended`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.affectedRows === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
             }
-        )
-    })
+        );
+    });
 }
 
-
 async function updateRecommended(recommendedId, recommendedData) {
-
-    const currentDataArray = await getRecommendedById(recommendedId)
+    const currentDataArray = await getRecommendedById(recommendedId);
     if (currentDataArray.length === 0) {
-        throw new Error('سرویس یافت نشد.');
+        throw new SendError(404, 'Service not found.');
     }
-    const currentData = currentDataArray[0]
+    const currentData = currentDataArray[0];
 
     const recommendedUpdate = {
         imageAddress: recommendedData.imageAddress || currentData.imageAddress,
@@ -75,7 +71,7 @@ async function updateRecommended(recommendedId, recommendedData) {
         shortTitle: recommendedData.shortTitle || currentData.shortTitle,
         price: recommendedData.price || currentData.price,
         description: recommendedData.description || currentData.description,
-    }
+    };
 
     return new Promise((resolve, reject) => {
         dbConnection.query('UPDATE `recommended` SET ' +
@@ -88,13 +84,12 @@ async function updateRecommended(recommendedId, recommendedData) {
             [recommendedUpdate.imageAddress, recommendedUpdate.name, recommendedUpdate.shortTitle,
                 recommendedUpdate.price, recommendedUpdate.description, recommendedId],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'خطای سرور'));
-                if (result.changedRows === 0) return reject(new SendError(400, 'اطلاعات جدید وارد کنید'));
-                else resolve(result)
-            })
-    })
+                if (err) return reject(new SendError(500, 'Server error'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
+                else resolve(result);
+            });
+    });
 }
-
 
 module.exports = {
     getAllRecommended,
@@ -102,4 +97,4 @@ module.exports = {
     addRecommended,
     deleteRecommended,
     updateRecommended
-}
+};
