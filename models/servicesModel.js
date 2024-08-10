@@ -1,52 +1,53 @@
 const {dbConnection} = require("../config/dbConnection");
+const {SendError} = require('../untils/SendError')
 
 
 async function getAllServices() {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `services`', (err, result) => {
-            if (err) return reject(err)
+            if (err) return reject(new SendError(500, 'خطای سرور'));
             else resolve(result)
         })
     })
 }
 
 
-function getServicesById (id){
+function getServicesById(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'SELECT * FROM `services` WHERE `id` = ?',
             [id],
-            (err, result)=> {
-                if (err) return reject(err);
-                if (result.length === 0) return reject(new Error('سروریس مورد نظر یافت نشد.'));
+            (err, result) => {
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.length === 0) return reject(new SendError(404, 'سروریس مورد نظر یافت نشد.'));
                 else resolve(result);
             })
     })
 }
 
 
-async function addService(serviceData){
+async function addService(serviceData) {
     return new Promise((resolve, reject) => {
         dbConnection.query('INSERT INTO `services` (`id`, `imageAddress`,`name`)' +
             ' VALUES (NULL, ?, ?)',
-            [serviceData.imageAddress , serviceData.name],
+            [serviceData.imageAddress, serviceData.name],
             (err, results) => {
-                if (err) return reject(err);
-                else resolve({ id: results.insertId, ...serviceData });
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                else resolve({id: results.insertId, ...serviceData});
             }
         );
     })
 }
 
 
-async function deleteService (id){
+async function deleteService(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'DELETE FROM services WHERE `services`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(err);
-                if (result.affectedRows === 0) return reject(new Error('سروریس مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'سروریس مورد نظر یافت نشد.'));
                 else resolve(result);
             }
         )
@@ -54,9 +55,9 @@ async function deleteService (id){
 }
 
 
-async function updateService (serviceId ,serviceData){
+async function updateService(serviceId, serviceData) {
 
-    const currentDataArray  = await getServicesById(serviceId)
+    const currentDataArray = await getServicesById(serviceId)
     if (currentDataArray.length === 0) {
         throw new Error('سرویس یافت نشد.');
     }
@@ -72,8 +73,8 @@ async function updateService (serviceId ,serviceData){
             ' WHERE `services`.`id` = ?',
             [serviceUpdate.imageAddress, serviceUpdate.name, serviceId],
             (err, result) => {
-                if (err) return reject(err)
-                if (result.changedRows === 0) return reject(new Error('اطلاعات جدید وارد کنید'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'اطلاعات جدید وارد کنید'));
                 else resolve(result)
             })
     })

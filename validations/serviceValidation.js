@@ -1,4 +1,4 @@
-const { body } = require ('express-validator')
+const {body} = require('express-validator')
 
 
 exports.validateAddService = [
@@ -8,7 +8,7 @@ exports.validateAddService = [
     body('name')
         .notEmpty()
         .withMessage('نام سرویس الزامی است.').bail()
-        .isLength({ min: 2, max: 50 })
+        .isLength({min: 2, max: 50})
         .withMessage('نام باید بین 2 تا 50 کاراکتر باشد').bail()
         .matches(/^[a-zA-Z0-9 ]+$/)
         .withMessage('نام فقط می‌تواند شامل حروف، اعداد و فاصله باشد'),

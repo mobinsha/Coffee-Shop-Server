@@ -1,31 +1,31 @@
 const {dbConnection} = require("../config/dbConnection");
-
+const {SendError} = require('../untils/SendError')
 
 async function getAllRecommended() {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `recommended`', (err, result) => {
-            if (err) return reject(err)
+            if (err) return reject(new SendError(500, 'خطای سرور'));
             else resolve(result)
         })
     })
 }
 
 
-function getRecommendedById (id){
+function getRecommendedById(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'SELECT * FROM `recommended` WHERE `id` = ?',
             [id],
-            (err, result)=> {
-                if (err) return reject(err);
-                if (result.length === 0) return reject(new Error('محصول مورد نظر یافت نشد.'));
+            (err, result) => {
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.length === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد.'));
                 else resolve(result);
             })
     })
 }
 
 
-async function addRecommended(RecommendedData){
+async function addRecommended(RecommendedData) {
     return new Promise((resolve, reject) => {
         dbConnection.query('INSERT INTO `recommended`(`id`, `imageAddress`,`name`,' +
             '`shortTitle`, `price`, `description`)' +
@@ -38,22 +38,22 @@ async function addRecommended(RecommendedData){
                 RecommendedData.description],
 
             (err, results) => {
-                if (err) return reject(err);
-                else resolve({ id: results.insertId, ...RecommendedData });
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                else resolve({id: results.insertId, ...RecommendedData});
             }
         );
     })
 }
 
 
-async function deleteRecommended (id){
+async function deleteRecommended(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'DELETE FROM recommended WHERE `recommended`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(err);
-                if (result.affectedRows === 0) return reject(new Error('محصول مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد.'));
                 else resolve(result);
             }
         )
@@ -61,9 +61,9 @@ async function deleteRecommended (id){
 }
 
 
-async function updateRecommended (recommendedId, recommendedData){
+async function updateRecommended(recommendedId, recommendedData) {
 
-    const currentDataArray  = await getRecommendedById(recommendedId)
+    const currentDataArray = await getRecommendedById(recommendedId)
     if (currentDataArray.length === 0) {
         throw new Error('سرویس یافت نشد.');
     }
@@ -88,8 +88,8 @@ async function updateRecommended (recommendedId, recommendedData){
             [recommendedUpdate.imageAddress, recommendedUpdate.name, recommendedUpdate.shortTitle,
                 recommendedUpdate.price, recommendedUpdate.description, recommendedId],
             (err, result) => {
-                if (err) return reject(err)
-                if (result.changedRows === 0) return reject(new Error('اطلاعات جدید وارد کنید'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'اطلاعات جدید وارد کنید'));
                 else resolve(result)
             })
     })

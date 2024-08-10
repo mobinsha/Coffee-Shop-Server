@@ -1,31 +1,33 @@
 const {dbConnection} = require("../config/dbConnection");
 const {checkUserExist} = require('../models/userModel')
+const {SendError} = require('../untils/SendError')
+
 
 async function getAllBlogs() {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `blogs`', (err, result) => {
-            if (err) return reject(err)
+            if (err) return reject(new SendError(500, 'خطای سرور'));
             else resolve(result)
         })
     })
 }
 
 
-function getBlogById (id){
+function getBlogById(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'SELECT * FROM `blogs` WHERE `id` = ?',
             [id],
-            (err, result)=> {
-                if (err) return reject(err);
-                if (result.length === 0) return reject(new Error('بلاگ مورد نظر یافت نشد.'));
+            (err, result) => {
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.length === 0) return reject(new SendError(404, 'بلاگ مورد نظر یافت نشد.'));
                 else resolve(result);
             })
     })
 }
 
 
-async function addBlog(blogData){
+async function addBlog(blogData) {
     return new Promise(async (resolve, reject) => {
         const userExists = await checkUserExist(blogData.userId);
         if (!userExists) {
@@ -37,7 +39,7 @@ async function addBlog(blogData){
             ' VALUES (NULL, ?, ?, ?, current_timestamp(), current_timestamp())',
             [blogData.title, blogData.content, blogData.userId],
             (err, results) => {
-                if (err) return reject(err)
+                if (err) return reject(new SendError(500, 'خطای سرور'));
                 else resolve({id: results.insertId, ...blogData});
             }
         );
@@ -45,14 +47,14 @@ async function addBlog(blogData){
 }
 
 
-async function deleteBlog (id){
+async function deleteBlog(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'DELETE FROM blogs WHERE `blogs`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(err);
-                if (result.affectedRows === 0) return reject(new Error('بلاگ مورد نظر یافت نشد.'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'بلاگ مورد نظر یافت نشد.'));
                 else resolve(result);
             }
         )
@@ -60,9 +62,9 @@ async function deleteBlog (id){
 }
 
 
-async function updateBlogs (blogId, blogData){
+async function updateBlogs(blogId, blogData) {
 
-    const currentDataArray  = await getBlogById(blogId)
+    const currentDataArray = await getBlogById(blogId)
     if (currentDataArray.length === 0) {
         throw new Error('بلاگ یافت نشد.');
     }
@@ -75,12 +77,12 @@ async function updateBlogs (blogId, blogData){
     }
 
     return new Promise((resolve, reject) => {
-        dbConnection.query('UPDATE `blogs` SET `title` = ?, `content` = ?, `userId` = ? '+
-            ' WHERE `services`.`id` = ?',
+        dbConnection.query('UPDATE `blogs` SET `title` = ?, `content` = ?, `userId` = ? ' +
+            ' WHERE `blogs`.`id` = ?',
             [blogUpdate.title, blogUpdate.content, blogUpdate.userId, blogId],
             (err, result) => {
-                if (err) return reject(err)
-                if (result.changedRows === 0) return reject(new Error('اطلاعات جدید وارد کنید'));
+                if (err) return reject(new SendError(500, 'خطای سرور'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'اطلاعات جدید وارد کنید'));
                 else resolve(result)
             })
     })

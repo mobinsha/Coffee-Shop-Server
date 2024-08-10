@@ -1,45 +1,31 @@
 const recommendedModel = require("../models/recommendedModel")
 const {validationResult} = require("express-validator");
-const servicesModel = require("../models/servicesModel");
+const {sendResponse} = require('../untils/responseController')
 
 
-function sendResponse(res, statusCode, message, data = {}, error = null) {
-    res.status(statusCode).json({
-        status: statusCode < 400,
-        message,
-        data,
-        error
-    });
-}
-
-
-async function getAllRecommended (req, res) {
-    try{
+async function getAllRecommended(req, res, next) {
+    try {
         const recommended = await recommendedModel.getAllRecommended()
         sendResponse(res, 200, 'موفقیت‌آمیز', recommended);
     } catch (err) {
-        sendResponse(res, 500, 'خطای سرور', err.message);
+        next(err)
     }
 }
 
 
-async function getRecommendedById (req, res) {
+async function getRecommendedById(req, res, next) {
     const recommendedId = req.params.id
 
-    try{
+    try {
         const recommended = await recommendedModel.getRecommendedById(recommendedId)
         sendResponse(res, 200, 'موفقیت‌آمیز', recommended);
     } catch (err) {
-        if (err === 'محصول مورد نظر یافت نشد.'){
-            sendResponse(res, 404, err.message);
-        } else {
-            sendResponse(res, 500, 'خطای سرور', {}, err.message);
-        }
+        next(err)
     }
 }
 
 
-async function addRecommended (req, res) {
+async function addRecommended(req, res, next) {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -48,15 +34,21 @@ async function addRecommended (req, res) {
 
     const {imageAddress, name, shortTitle, price, description} = req.body;
     try {
-        const newRecommended = await recommendedModel.addRecommended({imageAddress, name, shortTitle, price, description})
-        sendResponse(res, 201, newRecommended,'محصول با موفقیت اضافه شد');
+        const newRecommended = await recommendedModel.addRecommended({
+            imageAddress,
+            name,
+            shortTitle,
+            price,
+            description
+        })
+        sendResponse(res, 201, newRecommended, 'محصول با موفقیت اضافه شد');
     } catch (err) {
-        sendResponse(res, 500, 'خطای سرور', err.message);
+        next(err)
     }
 }
 
 
-async function deleteRecommended(req, res) {
+async function deleteRecommended(req, res, next) {
     const deleteRecommendedId = req.body.id;
     try {
         await recommendedModel.deleteRecommended(deleteRecommendedId);
@@ -65,13 +57,13 @@ async function deleteRecommended(req, res) {
         if (err.message === 'محصول یافت نشد.') {
             sendResponse(res, 404, err.message);
         } else {
-            sendResponse(res, 500, 'خطای سرور', {}, err.message);
+            next(err)
         }
     }
 }
 
 
-async function updateRecommended(req, res) {
+async function updateRecommended(req, res, next) {
     const recommendedId = req.body.id;
     const recommendedData = req.body;
 
@@ -79,14 +71,8 @@ async function updateRecommended(req, res) {
         await recommendedModel.updateRecommended(recommendedId, recommendedData);
         sendResponse(res, 200, 'محصول با موفقیت به‌روزرسانی شد');
 
-    } catch (error) {
-        if (error.message === 'محصول یافت نشد.') {
-            sendResponse(res, 404, error.message);
-        } else if (error.message === 'اطلاعات جدید وارد کنید') {
-            sendResponse(res, 400, error.message);
-        } else {
-            sendResponse(res, 500, 'خطای سرور', {}, error.message);
-        }
+    } catch (err) {
+        next(err)
     }
 }
 
