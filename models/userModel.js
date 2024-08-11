@@ -4,7 +4,7 @@ const { SendError } = require('../utils/sendError');
 async function getAllUsers() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `users`', (err, result) => {
-            if (err) return reject(new SendError(500, 'Server error'));
+            if (err) return reject(new SendError(500, err));
             else resolve(result);
         });
     });
@@ -16,7 +16,7 @@ function getUserById(id) {
             'SELECT * FROM `users` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.length === 0) return reject(new SendError(404, 'User not found.'));
                 else resolve(result);
             }
@@ -30,7 +30,7 @@ async function checkUserExist(id) {
             'SELECT id FROM `users` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 else resolve(result.length > 0);
             }
         );
@@ -40,7 +40,7 @@ async function checkUserExist(id) {
 async function checkUserNameExists(userName) {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM users WHERE userName = ?', [userName], (err, rows) => {
-            if (err) return reject(new SendError(500, 'Server error'));
+            if (err) return reject(new SendError(500, err));
             else resolve(rows.length > 0);
         });
     });
@@ -49,7 +49,7 @@ async function checkUserNameExists(userName) {
 async function checkEmailExists(email) {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM users WHERE `email` = ?', [email], (err, rows) => {
-            if (err) return reject(new SendError(500, 'Server error'));
+            if (err) return reject(new SendError(500, err));
             else resolve(rows.length > 0);
         });
     });
@@ -61,7 +61,7 @@ async function deleteUser(id) {
             'DELETE FROM users WHERE `users`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.affectedRows === 0) return reject(new SendError(404, 'User not found.'));
                 else resolve(result);
             }
@@ -76,7 +76,7 @@ async function addUser(userData) {
             'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())',
             [userData.userName, userData.password, userData.email, userData.fullName, userData.phoneNumber, 'guest', 'active'],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 else resolve({ id: result.insertId, ...userData });
             }
         );
@@ -103,7 +103,7 @@ async function userUpdate(userID, userData) {
         dbConnection.query('UPDATE `users` SET `userName` = ?, `password` = ?, `email` = ?, `fullName` = ?, `phoneNumber` = ?, `permission` = ? WHERE `id` = ?',
             [userUpdate.userName, userUpdate.password, userUpdate.email, userUpdate.fullName, userUpdate.phoneNumber, userUpdate.permission, userID],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information'));
                 else resolve(result);
             });

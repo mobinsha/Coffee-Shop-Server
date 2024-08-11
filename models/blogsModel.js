@@ -5,7 +5,7 @@ const { SendError } = require('../utils/SendError');
 async function getAllBlogs() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `blogs`', (err, result) => {
-            if (err) return reject(new SendError(500, 'Server error'));
+            if (err) return reject(new SendError(500, err));
             else resolve(result);
         });
     });
@@ -17,7 +17,7 @@ function getBlogById(id) {
             'SELECT * FROM `blogs` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.length === 0) return reject(new SendError(404, 'Blog not found.'));
                 else resolve(result);
             }
@@ -37,7 +37,7 @@ async function addBlog(blogData) {
             ' VALUES (NULL, ?, ?, ?, current_timestamp(), current_timestamp())',
             [blogData.title, blogData.content, blogData.userId],
             (err, results) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 else resolve({ id: results.insertId, ...blogData });
             }
         );
@@ -50,7 +50,7 @@ async function deleteBlog(id) {
             'DELETE FROM blogs WHERE `blogs`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.affectedRows === 0) return reject(new SendError(404, 'Blog not found.'));
                 else resolve(result);
             }
@@ -76,7 +76,7 @@ async function updateBlogs(blogId, blogData) {
             ' WHERE `blogs`.`id` = ?',
             [blogUpdate.title, blogUpdate.content, blogUpdate.userId, blogId],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
                 else resolve(result);
             });

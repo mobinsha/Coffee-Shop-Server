@@ -4,7 +4,7 @@ const { SendError } = require('../utils/SendError');
 async function getAllRecommended() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `recommended`', (err, result) => {
-            if (err) return reject(new SendError(500, 'Server error'));
+            if (err) return reject(new SendError(500, err));
             else resolve(result);
         });
     });
@@ -16,7 +16,7 @@ function getRecommendedById(id) {
             'SELECT * FROM `recommended` WHERE `id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.length === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
             }
@@ -37,7 +37,7 @@ async function addRecommended(RecommendedData) {
                 RecommendedData.description],
 
             (err, results) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 else resolve({ id: results.insertId, ...RecommendedData });
             }
         );
@@ -50,7 +50,7 @@ async function deleteRecommended(id) {
             'DELETE FROM recommended WHERE `recommended`.`id` = ?',
             [id],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.affectedRows === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
             }
@@ -84,7 +84,7 @@ async function updateRecommended(recommendedId, recommendedData) {
             [recommendedUpdate.imageAddress, recommendedUpdate.name, recommendedUpdate.shortTitle,
                 recommendedUpdate.price, recommendedUpdate.description, recommendedId],
             (err, result) => {
-                if (err) return reject(new SendError(500, 'Server error'));
+                if (err) return reject(new SendError(500, err));
                 if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
                 else resolve(result);
             });
