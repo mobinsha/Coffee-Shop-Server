@@ -1,6 +1,9 @@
 const userModel = require("../models/userModel");
 const { validationResult } = require('express-validator');
 const { sendResponse } = require('../utils/responseController');
+const jwt = require('jsonwebtoken')
+const {decode} = require("jsonwebtoken");
+require('dotenv').config()
 
 async function getAllUsers(req, res, next) {
     try {
@@ -21,6 +24,22 @@ async function getUserById(req, res, next) {
     }
 }
 
+async function login(req, res, next) {
+    const {userNameOrEmail, password} = req.body
+    try {
+        const user = await userModel.getUserByUsernameOrEmail(userNameOrEmail)
+        const isMatch = await userModel.comparePassword(password, user.password)
+
+        if (isMatch){
+            const token = jwt.sign({id : user.id, permission : user.permission}, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})
+            sendResponse(res, 200, 'Success', {token : token});
+        }
+
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function deleteUser(req, res, next) {
     const deleteUserId = req.body.id;
     try {
@@ -31,7 +50,7 @@ async function deleteUser(req, res, next) {
     }
 }
 
-async function addUser(req, res, next) {
+async function register(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return sendResponse(res, 400, 'Validation errors', {}, errors.array());
@@ -61,7 +80,8 @@ async function userUpdate(req, res, next) {
 module.exports = {
     getAllUsers,
     getUserById,
-    addUser,
+    register,
+    login,
     deleteUser,
     userUpdate
 };

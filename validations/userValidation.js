@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const userModel = require("../models/userModel");
 
-exports.validateAddUser = [
+exports.validateRegister = [
     body('userName')
         .isString().withMessage('Username must be a string.').bail()
         .matches(/^[A-Za-z][A-Za-z0-9]*$/).withMessage('Username must start with a letter and can only contain letters and numbers.').bail()

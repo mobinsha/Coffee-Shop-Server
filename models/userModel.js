@@ -1,5 +1,6 @@
 const { dbConnection } = require('../config/dbConnection');
 const { SendError } = require('../utils/sendError');
+const bcrypt = require('bcrypt')
 
 async function getAllUsers() {
     return new Promise((resolve, reject) => {
@@ -69,12 +70,37 @@ async function deleteUser(id) {
     });
 }
 
+function  getUserByUsernameOrEmail(userNameOrEmail) {
+    return new Promise((resolve, reject) => {
+        dbConnection.query(
+            'SELECT * FROM `users` WHERE userName = ? OR email = ?;',
+            [userNameOrEmail, userNameOrEmail],
+            async (err, result) => {
+                if (err) return reject(new SendError(500, err));
+                if (result.length === 0) return reject(new SendError(404, 'UserName or Email not found.'));
+                else resolve(result[0])
+            }
+        );
+    });
+}
+
+async function comparePassword(inputPassword, userPassword) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(inputPassword, userPassword, (err, isMatch) => {
+            if (err) return reject(new SendError(500, err))
+            if (!isMatch) return reject(new SendError(401, 'Incorrect password.'))
+            else resolve(isMatch)
+        })
+    });
+}
+
 async function addUser(userData) {
+    const hashedPassword = await bcrypt.hash(userData.password, 11)
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'INSERT INTO `users` (`id`, `userName`, `password`, `email`, `fullName`, `phoneNumber`, `permission`, `accountStatus`, `createdAt`, `updatedAt`) ' +
             'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())',
-            [userData.userName, userData.password, userData.email, userData.fullName, userData.phoneNumber, 'guest', 'active'],
+            [userData.userName, hashedPassword, userData.email, userData.fullName, userData.phoneNumber, 'guest', 'active'],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
                 else resolve({ id: result.insertId, ...userData });
@@ -117,6 +143,8 @@ module.exports = {
     checkUserNameExists,
     checkEmailExists,
     deleteUser,
+    getUserByUsernameOrEmail,
+    comparePassword,
     addUser,
     userUpdate
 };
