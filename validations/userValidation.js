@@ -47,5 +47,5 @@ exports.validateRegister = [
         .isLength({ min: 11, max: 11 }).withMessage('Phone number must be 11 digits long.'),
 
     body('permission')
-        .isIn(['admin', 'user', 'guest']).withMessage('Permission level must be one of the following: admin, user, or guest.')
+        .isIn(['admin', 'user']).withMessage('Permission level must be one of the following: admin or user')
 ];

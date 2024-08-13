@@ -2,7 +2,6 @@ const userModel = require("../models/userModel");
 const { validationResult } = require('express-validator');
 const { sendResponse } = require('../utils/responseController');
 const jwt = require('jsonwebtoken')
-const {decode} = require("jsonwebtoken");
 require('dotenv').config()
 
 async function getAllUsers(req, res, next) {
