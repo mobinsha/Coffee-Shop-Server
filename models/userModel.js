@@ -84,23 +84,13 @@ function  getUserByUsernameOrEmail(userNameOrEmail) {
     });
 }
 
-async function comparePassword(inputPassword, userPassword) {
-    return new Promise((resolve, reject) => {
-        bcrypt.compare(inputPassword, userPassword, (err, isMatch) => {
-            if (err) return reject(new SendError(500, err))
-            if (!isMatch) return reject(new SendError(401, 'Incorrect password.'))
-            else resolve(isMatch)
-        })
-    });
-}
-
 async function addUser(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, 11)
     return new Promise((resolve, reject) => {
         dbConnection.query(
             'INSERT INTO `users` (`id`, `userName`, `password`, `email`, `fullName`, `phoneNumber`, `permission`, `accountStatus`, `createdAt`, `updatedAt`) ' +
             'VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, current_timestamp(), current_timestamp())',
-            [userData.userName, hashedPassword, userData.email, userData.fullName, userData.phoneNumber, 'user', 'active'],
+            [userData.userName, hashedPassword, userData.email, userData.fullName, userData.phoneNumber, userData.permission, 'active'],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
                 else resolve({ id: result.insertId, ...userData });
@@ -150,7 +140,6 @@ module.exports = {
     checkEmailExists,
     deleteUser,
     getUserByUsernameOrEmail,
-    comparePassword,
     addUser,
     userUpdate
 };

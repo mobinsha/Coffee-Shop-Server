@@ -6,7 +6,7 @@ const {authorize} = require("../middlewares/authorize");
 const {authenticateToken} = require("../middlewares/authenticateToken");
 
 
-router.get('/', authenticateToken, authorize(['admin', 'user']), blogsController.getAllBlogs)
+router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), blogsController.getAllBlogs)
 router.get('/:id', authenticateToken, authorize('admin'), blogsController.getBlogById)
 router.post('/add', authenticateToken, authorize('admin'), validateAddBlog, blogsController.addBlog)
 router.delete('/delete', authenticateToken, authorize('admin'), blogsController.deleteBlog)

@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 const { sendResponse } = require('../utils/responseController');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const {comparePassword} = require('../utils/comparePassword')
 
 async function getAllUsers(req, res, next) {
     try {
@@ -27,7 +28,7 @@ async function login(req, res, next) {
     const {userNameOrEmail, password} = req.body
     try {
         const user = await userModel.getUserByUsernameOrEmail(userNameOrEmail)
-        const isMatch = await userModel.comparePassword(password, user.password)
+        const isMatch = await comparePassword(password, user.password)
 
         if (isMatch){
             const token = jwt.sign({id : user.id, permission : user.permission}, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})

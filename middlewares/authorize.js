@@ -7,7 +7,7 @@ function authorize(allowedRoles) {
            return sendResponse(res, 403, 'Access denied. Insufficient permissions.');
         }
         next();
-    };
+    }
 }
 
 module.exports = { authorize };

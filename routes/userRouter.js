@@ -6,7 +6,7 @@ const {authenticateToken} = require('../middlewares/authenticateToken')
 const {authorize} = require('../middlewares/authorize')
 
 
-router.get('/',authenticateToken, authorize('admin'), userController.getAllUsers)
+router.get('/', authenticateToken, authorize(['admin']), userController.getAllUsers)
 router.get('/:id', authenticateToken, authorize(['admin', 'user']), userController.getUserById)
 router.post('/register', validateRegister, userController.register);
 router.post('/login', userController.login);

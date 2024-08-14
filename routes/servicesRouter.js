@@ -6,7 +6,7 @@ const {authenticateToken} = require('../middlewares/authenticateToken')
 const {authorize} = require('../middlewares/authorize')
 
 
-router.get('/', authenticateToken, authorize(['admin', 'user']), servicesController.getAllServices)
+router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), servicesController.getAllServices)
 router.get('/:id', authenticateToken, authorize('admin'), servicesController.getServicesById)
 router.post('/add', authenticateToken, authorize('admin'), validateAddService, servicesController.addService)
 router.delete('/delete', authenticateToken, authorize('admin'), servicesController.deleteService)
