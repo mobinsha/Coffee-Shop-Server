@@ -44,7 +44,7 @@ async function addRecommended(req, res, next) {
 }
 
 async function deleteRecommended(req, res, next) {
-    const deleteRecommendedId = req.body.id;
+    const deleteRecommendedId = req.params.id;
     try {
         await recommendedModel.deleteRecommended(deleteRecommendedId);
         sendResponse(res, 200, 'Product successfully deleted');
@@ -58,7 +58,7 @@ async function deleteRecommended(req, res, next) {
 }
 
 async function updateRecommended(req, res, next) {
-    const recommendedId = req.body.id;
+    const recommendedId = req.params.id;
     const recommendedData = req.body;
 
     try {

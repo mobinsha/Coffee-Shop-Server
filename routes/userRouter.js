@@ -10,8 +10,8 @@ router.get('/', authenticateToken, authorize(['admin']), userController.getAllUs
 router.get('/:id', authenticateToken, authorize(['admin', 'user']), userController.getUserById)
 router.post('/register', validateRegister, userController.register);
 router.post('/login', userController.login);
-router.delete('/delete', authenticateToken, authorize('admin'), userController.deleteUser)
-router.put('/update', authenticateToken, authorize('admin'), userController.userUpdate)
+router.delete('/delete/:id', authenticateToken, authorize('admin'), userController.deleteUser)
+router.put('/update/:id', authenticateToken, authorize('admin'), userController.userUpdate)
 
 
 module.exports = router;

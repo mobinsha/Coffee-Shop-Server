@@ -40,7 +40,7 @@ async function addBlog(req, res, next) {
 }
 
 async function deleteBlog(req, res, next) {
-    const deleteBlogId = req.body.id;
+    const deleteBlogId = req.params.id;
     try {
         await blogsModel.deleteBlog(deleteBlogId);
         sendResponse(res, 200, 'Blog successfully deleted');
@@ -50,7 +50,7 @@ async function deleteBlog(req, res, next) {
 }
 
 async function updateBlog(req, res, next) {
-    const blogId = req.body.id;
+    const blogId = req.params.id;
     const blogData = req.body;
 
     try {

@@ -9,8 +9,8 @@ const {authenticateToken} = require("../middlewares/authenticateToken");
 router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), recommendedController.getAllRecommended)
 router.get('/:id', authenticateToken, authorize('admin'), recommendedController.getRecommendedById)
 router.post('/add', authenticateToken, authorize('admin'), validateAddRecommended, recommendedController.addRecommended)
-router.delete('/delete', authenticateToken, authorize('admin'), recommendedController.deleteRecommended)
-router.put('/update', authenticateToken, authorize('admin'), recommendedController.updateRecommended)
+router.delete('/delete/:id', authenticateToken, authorize('admin'), recommendedController.deleteRecommended)
+router.put('/update/:id', authenticateToken, authorize('admin'), recommendedController.updateRecommended)
 
 
 module.exports = router;

@@ -41,7 +41,7 @@ async function login(req, res, next) {
 }
 
 async function deleteUser(req, res, next) {
-    const deleteUserId = req.body.id;
+    const deleteUserId = req.params.id;
     try {
         await userModel.deleteUser(deleteUserId);
         sendResponse(res, 200, 'User successfully deleted');
@@ -66,7 +66,7 @@ async function register(req, res, next) {
 }
 
 async function userUpdate(req, res, next) {
-    const userId = req.body.id;
+    const userId = req.params.id;
     const userData = req.body;
 
     try {

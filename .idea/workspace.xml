@@ -7,10 +7,13 @@
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/blogsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/blogsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/recommendedController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/recommendedController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/servicesController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/servicesController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/blogsModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/blogsModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/userModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validations/blogValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/blogValidation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/blogsRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/blogsRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/recommendedRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommendedRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/servicesRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/servicesRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/userRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/userRouter.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +118,7 @@
       <workItem from="1723524063610" duration="1410000" />
       <workItem from="1723563519221" duration="8223000" />
       <workItem from="1723637823390" duration="3635000" />
-      <workItem from="1723808537129" duration="5487000" />
+      <workItem from="1723808537129" duration="7168000" />
     </task>
     <servers />
   </component>

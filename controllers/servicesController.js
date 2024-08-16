@@ -39,7 +39,7 @@ async function addService(req, res, next) {
 }
 
 async function deleteService(req, res, next) {
-    const deleteServiceId = req.body.id;
+    const deleteServiceId = req.params.id;
     try {
         await servicesModel.deleteService(deleteServiceId);
         sendResponse(res, 200, 'Service successfully deleted');
@@ -49,7 +49,7 @@ async function deleteService(req, res, next) {
 }
 
 async function updateService(req, res, next) {
-    const serviceId = req.body.id;
+    const serviceId = req.params.id;
     const serviceData = req.body;
 
     try {

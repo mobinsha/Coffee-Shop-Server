@@ -9,8 +9,8 @@ const {authorize} = require('../middlewares/authorize')
 router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), servicesController.getAllServices)
 router.get('/:id', authenticateToken, authorize('admin'), servicesController.getServicesById)
 router.post('/add', authenticateToken, authorize('admin'), validateAddService, servicesController.addService)
-router.delete('/delete', authenticateToken, authorize('admin'), servicesController.deleteService)
-router.put('/update', authenticateToken, authorize('admin'), servicesController.updateService)
+router.delete('/delete/:id', authenticateToken, authorize('admin'), servicesController.deleteService)
+router.put('/update/:id', authenticateToken, authorize('admin'), servicesController.updateService)
 
 
 module.exports = router;

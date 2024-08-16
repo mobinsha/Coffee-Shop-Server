@@ -9,8 +9,8 @@ const {authenticateToken} = require("../middlewares/authenticateToken");
 router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), blogsController.getAllBlogs)
 router.get('/:id', authenticateToken, authorize('admin'), blogsController.getBlogById)
 router.post('/add', authenticateToken, authorize('admin'), validateAddBlog, blogsController.addBlog)
-router.delete('/delete', authenticateToken, authorize('admin'), blogsController.deleteBlog)
-router.put('/update', authenticateToken, authorize('admin'), blogsController.updateBlog)
+router.delete('/delete/:id', authenticateToken, authorize('admin'), blogsController.deleteBlog)
+router.put('/update/:id', authenticateToken, authorize('admin'), blogsController.updateBlog)
 
 
 module.exports = router;
