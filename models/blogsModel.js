@@ -1,5 +1,4 @@
 const { dbConnection } = require("../config/dbConnection");
-const { checkUserExist } = require('../models/userModel');
 const { SendError } = require('../utils/SendError');
 
 async function getAllBlogs() {
@@ -27,15 +26,11 @@ function getBlogById(id) {
 
 async function addBlog(blogData) {
     return new Promise(async (resolve, reject) => {
-        const userExists = await checkUserExist(blogData.userId);
-        if (!userExists) {
-            return reject(new SendError(404, 'User not found.'));
-        }
 
         dbConnection.query('INSERT INTO `blogs`' +
-            '(`id`, `title`, `content`, `userId`, `created_at`, `updated_at`)' +
+            '(`id`, `title`, `content`, `adminId`, `created_at`, `updated_at`)' +
             ' VALUES (NULL, ?, ?, ?, current_timestamp(), current_timestamp())',
-            [blogData.title, blogData.content, blogData.userId],
+            [blogData.title, blogData.content, blogData.adminId],
             (err, results) => {
                 if (err) return reject(new SendError(500, err));
                 else resolve({ id: results.insertId, ...blogData });

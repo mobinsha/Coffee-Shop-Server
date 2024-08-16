@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/blogsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/blogsController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/authenticateToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authenticateToken.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/authorize.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authorize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/blogsModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/blogsModel.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/userModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/blogsRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/blogsRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/recommendedRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommendedRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/servicesRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/servicesRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/userRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/userRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/errorHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/errorHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/validations/blogValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/validations/blogValidation.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +34,9 @@
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProblemsViewState">
+    <option name="groupByToolId" value="true" />
     <option name="selectedTabId" value="CurrentFile" />
+    <option name="sortByName" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -118,7 +114,8 @@
       <workItem from="1723463850952" duration="14716000" />
       <workItem from="1723524063610" duration="1410000" />
       <workItem from="1723563519221" duration="8223000" />
-      <workItem from="1723637823390" duration="3053000" />
+      <workItem from="1723637823390" duration="3635000" />
+      <workItem from="1723808537129" duration="5487000" />
     </task>
     <servers />
   </component>

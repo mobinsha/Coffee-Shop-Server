@@ -2,6 +2,7 @@ const { dbConnection } = require('../config/dbConnection');
 const { SendError } = require('../utils/sendError');
 const bcrypt = require('bcrypt')
 
+
 async function getAllUsers() {
     return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `users`', (err, result) => {
@@ -20,19 +21,6 @@ function getUserById(id) {
                 if (err) return reject(new SendError(500, err));
                 if (result.length === 0) return reject(new SendError(404, 'User not found.'));
                 else resolve(result);
-            }
-        );
-    });
-}
-
-async function checkUserExist(id) {
-    return new Promise((resolve, reject) => {
-        dbConnection.query(
-            'SELECT id FROM `users` WHERE `id` = ?',
-            [id],
-            (err, result) => {
-                if (err) return reject(new SendError(500, err));
-                else resolve(result.length > 0);
             }
         );
     });
@@ -78,6 +66,8 @@ function  getUserByUsernameOrEmail(userNameOrEmail) {
             async (err, result) => {
                 if (err) return reject(new SendError(500, err));
                 if (result.length === 0) return reject(new SendError(404, 'UserName or Email not found.'));
+                if (result[0].accountStatus === 'inactive') return reject(new SendError(404, 'Your account is inactive. Please contact support for assistance.'))
+                if (result[0].accountStatus === 'banned') return reject(new SendError(404, 'Your account is banned. Please contact support for assistance.'))
                 else resolve(result[0])
             }
         );
@@ -135,7 +125,6 @@ async function userUpdate(userID, userData) {
 module.exports = {
     getAllUsers,
     getUserById,
-    checkUserExist,
     checkUserNameExists,
     checkEmailExists,
     deleteUser,

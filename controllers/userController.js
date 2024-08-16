@@ -31,7 +31,7 @@ async function login(req, res, next) {
         const isMatch = await comparePassword(password, user.password)
 
         if (isMatch){
-            const token = jwt.sign({id : user.id, permission : user.permission}, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})
+            const token = jwt.sign({id: user.id, permission: user.permission }, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})
             sendResponse(res, 200, 'Success', {token : token});
         }
 

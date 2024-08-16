@@ -28,10 +28,11 @@ async function addBlog(req, res, next) {
         return sendResponse(res, 400, 'Validation errors', {}, errors.array());
     }
 
-    const { title, content, userId } = req.body;
+    const { title, content } = req.body;
+    const adminId = req.user.id
 
     try {
-        const newBlog = await blogsModel.addBlog({ title, content, userId });
+        const newBlog = await blogsModel.addBlog({ title, content, adminId });
         sendResponse(res, 201, 'Blog successfully added', newBlog);
     } catch (err) {
         next(err);

@@ -10,6 +10,6 @@ exports.validateAddBlog = [
         .notEmpty()
         .withMessage('Content is required.').bail()
         .matches(/^[a-zA-Z\s]+$/).withMessage('Content must contain only English letters and spaces.'),
-    body('userId')
+    body('adminId')
         .isNumeric().withMessage('User ID must be a numeric value.')
 ];
