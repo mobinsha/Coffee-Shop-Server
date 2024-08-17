@@ -6,7 +6,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 const userRouter = require("./routes/userRouter");
 const servicesRouter = require("./routes/servicesRouter");
-const recommendedRouter = require("./routes/recommendedRouter");
+const productRouter = require("./routes/productRouter");
 const blogsRouter = require('./routes/blogsRouter')
 
 app.use(cors({
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/api/users', userRouter)
 app.use('/api/services', servicesRouter)
-app.use('/api/recommended', recommendedRouter)
+app.use('/api/product', productRouter)
 app.use('/api/blogs', blogsRouter)
 
 app.use(errorHandler);

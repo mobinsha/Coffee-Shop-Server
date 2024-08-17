@@ -1,19 +1,19 @@
 const { dbConnection } = require("../config/dbConnection");
 const { SendError } = require('../utils/SendError');
 
-async function getAllRecommended() {
+async function getAllProduct() {
     return new Promise((resolve, reject) => {
-        dbConnection.query('SELECT * FROM `recommended`', (err, result) => {
+        dbConnection.query('SELECT * FROM `product`', (err, result) => {
             if (err) return reject(new SendError(500, err));
             else resolve(result);
         });
     });
 }
 
-function getRecommendedById(id) {
+function getProductById(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
-            'SELECT * FROM `recommended` WHERE `id` = ?',
+            'SELECT * FROM `product` WHERE `id` = ?',
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
@@ -24,30 +24,30 @@ function getRecommendedById(id) {
     });
 }
 
-async function addRecommended(RecommendedData) {
+async function addProduct(ProductData) {
     return new Promise((resolve, reject) => {
-        dbConnection.query('INSERT INTO `recommended`(`id`, `imageAddress`,`name`,' +
+        dbConnection.query('INSERT INTO `product`(`id`, `imageAddress`,`name`,' +
             '`shortTitle`, `price`, `description`)' +
             ' VALUES (NULL,?, ?, ?, ?, ?)',
 
-            [RecommendedData.imageAddress,
-                RecommendedData.name,
-                RecommendedData.shortTitle,
-                RecommendedData.price,
-                RecommendedData.description],
+            [ProductData.imageAddress,
+                ProductData.name,
+                ProductData.shortTitle,
+                ProductData.price,
+                ProductData.description],
 
             (err, results) => {
                 if (err) return reject(new SendError(500, err));
-                else resolve({ id: results.insertId, ...RecommendedData });
+                else resolve({ id: results.insertId, ...ProductData });
             }
         );
     });
 }
 
-async function deleteRecommended(id) {
+async function deleteProduct(id) {
     return new Promise((resolve, reject) => {
         dbConnection.query(
-            'DELETE FROM recommended WHERE `recommended`.`id` = ?',
+            'DELETE FROM product WHERE `product`.`id` = ?',
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
@@ -58,31 +58,31 @@ async function deleteRecommended(id) {
     });
 }
 
-async function updateRecommended(recommendedId, recommendedData) {
-    const currentDataArray = await getRecommendedById(recommendedId);
+async function updateProduct(productId, productData) {
+    const currentDataArray = await getProductById(productId);
     if (currentDataArray.length === 0) {
         throw new SendError(404, 'Service not found.');
     }
     const currentData = currentDataArray[0];
 
-    const recommendedUpdate = {
-        imageAddress: recommendedData.imageAddress || currentData.imageAddress,
-        name: recommendedData.name || currentData.name,
-        shortTitle: recommendedData.shortTitle || currentData.shortTitle,
-        price: recommendedData.price || currentData.price,
-        description: recommendedData.description || currentData.description,
+    const productUpdate = {
+        imageAddress: productData.imageAddress || currentData.imageAddress,
+        name: productData.name || currentData.name,
+        shortTitle: productData.shortTitle || currentData.shortTitle,
+        price: productData.price || currentData.price,
+        description: productData.description || currentData.description,
     };
 
     return new Promise((resolve, reject) => {
-        dbConnection.query('UPDATE `recommended` SET ' +
+        dbConnection.query('UPDATE `product` SET ' +
             '`imageAddress` = ?,' +
             ' `name` = ?,' +
             ' `shortTitle` = ?,' +
             ' `price` = ?,' +
             ' `description` = ?' +
-            ' WHERE `recommended`.`id` = ?',
-            [recommendedUpdate.imageAddress, recommendedUpdate.name, recommendedUpdate.shortTitle,
-                recommendedUpdate.price, recommendedUpdate.description, recommendedId],
+            ' WHERE `product`.`id` = ?',
+            [productUpdate.imageAddress, productUpdate.name, productUpdate.shortTitle,
+                productUpdate.price, productUpdate.description, productId],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
                 if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
@@ -92,9 +92,9 @@ async function updateRecommended(recommendedId, recommendedData) {
 }
 
 module.exports = {
-    getAllRecommended,
-    getRecommendedById,
-    addRecommended,
-    deleteRecommended,
-    updateRecommended
+    getAllProduct,
+    getProductById,
+    addProduct,
+    deleteProduct,
+    updateProduct
 };

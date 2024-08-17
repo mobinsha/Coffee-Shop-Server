@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
-exports.validateAddRecommended = [
+exports.validateAddProduct = [
     body('imageAddress')
         .matches(/\.(jpeg|jpg|gif|png)$/)
         .withMessage('The address must be an image in jpg, jpeg, gif, or png format.'),
