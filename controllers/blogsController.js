@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const blogsModel = require("../models/blogsModel");
-const { sendResponse } = require('../utils/responseController');
+const { sendResponse } = require('../utils/responseHandler');
 
 async function getAllBlogs(req, res, next) {
     try {

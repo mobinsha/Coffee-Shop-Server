@@ -1,4 +1,4 @@
-const {sendResponse} = require("../utils/responseController");
+const {sendResponse} = require("../utils/responseHandler");
 
 function authorize(allowedRoles) {
     return (req, res, next) => {

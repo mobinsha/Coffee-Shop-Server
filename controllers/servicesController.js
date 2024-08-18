@@ -1,6 +1,6 @@
 const servicesModel = require("../models/servicesModel");
 const { validationResult } = require("express-validator");
-const { sendResponse } = require('../utils/responseController');
+const { sendResponse } = require('../utils/responseHandler');
 
 async function getAllServices(req, res, next) {
     try {

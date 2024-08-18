@@ -1,4 +1,4 @@
-const { sendResponse } = require('../utils/responseController');
+const { sendResponse } = require('../utils/responseHandler');
 
 function errorHandler(err, req, res, next) {
     if (res.headersSent) {

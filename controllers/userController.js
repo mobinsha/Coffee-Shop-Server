@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 const { validationResult } = require('express-validator');
-const { sendResponse } = require('../utils/responseController');
+const { sendResponse } = require('../utils/responseHandler');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const {comparePassword} = require('../utils/comparePassword')

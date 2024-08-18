@@ -1,4 +1,4 @@
-const {sendResponse} = require("../utils/responseController");
+const {sendResponse} = require("../utils/responseHandler");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
