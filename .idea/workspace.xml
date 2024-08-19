@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/blogsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/blogsController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/productController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/productController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/servicesController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/servicesController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/authenticateToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authenticateToken.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/authorize.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/authorize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares/errorHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/errorHandler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/responseController.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/responseHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/dbConnection.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/dbConnection.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +114,8 @@
       <workItem from="1723637823390" duration="3635000" />
       <workItem from="1723808537129" duration="9784000" />
       <workItem from="1723897928814" duration="3103000" />
+      <workItem from="1723971877849" duration="192000" />
+      <workItem from="1724074977281" duration="333000" />
     </task>
     <servers />
   </component>
