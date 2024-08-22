@@ -1,4 +1,3 @@
-const { validationResult } = require("express-validator");
 const blogsModel = require("../models/blogsModel");
 const { sendResponse } = require('../utils/responseHandler');
 
@@ -23,11 +22,6 @@ async function getBlogById(req, res, next) {
 }
 
 async function addBlog(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return sendResponse(res, 400, 'Validation errors', {}, errors.array());
-    }
-
     const { title, content } = req.body;
     const adminId = req.user.id
 

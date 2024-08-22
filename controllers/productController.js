@@ -1,5 +1,4 @@
 const productModel = require("../models/productModel");
-const { validationResult } = require("express-validator");
 const { sendResponse } = require('../utils/responseHandler');
 
 async function getAllProduct(req, res, next) {
@@ -23,11 +22,6 @@ async function getProductById(req, res, next) {
 }
 
 async function addProduct(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return sendResponse(res, 400, 'Validation errors', {}, errors.array());
-    }
-
     const { imageAddress, name, shortTitle, price, description } = req.body;
     try {
         const newProduct = await productModel.addProduct({

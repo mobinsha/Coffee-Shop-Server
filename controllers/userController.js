@@ -1,5 +1,4 @@
 const userModel = require("../models/userModel");
-const { validationResult } = require('express-validator');
 const { sendResponse } = require('../utils/responseHandler');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -51,11 +50,6 @@ async function deleteUser(req, res, next) {
 }
 
 async function register(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return sendResponse(res, 400, 'Validation errors', {}, errors.array());
-    }
-
     const { userName, password, email, fullName, phoneNumber, permission } = req.body;
     try {
         await userModel.addUser({ userName, password, email, fullName, phoneNumber, permission });
