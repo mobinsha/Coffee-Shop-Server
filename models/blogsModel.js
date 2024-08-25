@@ -1,5 +1,5 @@
 const { dbConnection } = require("../config/dbConnection");
-const { SendError } = require('../utils/SendError');
+const { SendError } = require('../utils/sendError');
 
 async function getAllBlogs() {
     return new Promise((resolve, reject) => {
