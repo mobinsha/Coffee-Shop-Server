@@ -1,9 +1,18 @@
 const { dbConnection } = require("../config/dbConnection");
 const { SendError } = require('../utils/sendError');
 
-async function getAllBlogs() {
+async function getAllBlogs(limit) {
     return new Promise((resolve, reject) => {
-        dbConnection.query('SELECT * FROM `blogs`', (err, result) => {
+        let query = 'SELECT * FROM blogs ORDER BY createdAt DESC'
+
+        if (limit !== undefined){
+         limit = parseInt(limit, 10)
+            if (isNaN(limit) || limit <= 0){
+                return reject(new SendError(400, "Invalid limit parameter. It must be a positive number"))
+            } else query += ' LIMIT ?'
+        }
+
+        dbConnection.query(query, [limit],(err, result) => {
             if (err) return reject(new SendError(500, err));
             else resolve(result);
         });
@@ -28,7 +37,7 @@ async function addBlog(blogData) {
     return new Promise(async (resolve, reject) => {
 
         dbConnection.query('INSERT INTO `blogs`' +
-            '(`id`, `title`, `content`, `adminId`, `created_at`, `updated_at`)' +
+            '(`id`, `title`, `content`, `adminId`, `createdAt`, `updatedAt`)' +
             ' VALUES (NULL, ?, ?, ?, current_timestamp(), current_timestamp())',
             [blogData.title, blogData.content, blogData.adminId],
             (err, results) => {

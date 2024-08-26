@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f1fdf0e6-77cc-407b-9a20-f9f21ae51c61" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/dbConnection.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/dbConnection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/blogsController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/blogsController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/blogsModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/blogsModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/menuModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/menuModel.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,6 +127,8 @@
       <workItem from="1724484102135" duration="4546000" />
       <workItem from="1724596781045" duration="6855000" />
       <workItem from="1724613204766" duration="2000000" />
+      <workItem from="1724615446553" duration="44000" />
+      <workItem from="1724687693191" duration="5127000" />
     </task>
     <servers />
   </component>

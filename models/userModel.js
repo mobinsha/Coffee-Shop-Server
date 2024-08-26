@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 
 async function getAllUsers() {
     return new Promise((resolve, reject) => {
-        dbConnection.query('SELECT * FROM `users`', (err, result) => {
+        dbConnection.query('SELECT * FROM `users` ORDER BY createdAt DESC', (err, result) => {
             if (err) return reject(new SendError(500, err));
             else resolve(result);
         });

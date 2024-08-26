@@ -3,7 +3,8 @@ const { sendResponse } = require('../utils/responseHandler');
 
 async function getAllBlogs(req, res, next) {
     try {
-        const blog = await blogsModel.getAllBlogs();
+        const limit = (req.query.limit)
+        const blog = await blogsModel.getAllBlogs(limit);
         sendResponse(res, 200, 'Success', blog);
     } catch (err) {
         next(err);
