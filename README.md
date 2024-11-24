@@ -59,9 +59,19 @@ A backend server for managing a coffee shop application built with Node.js, Expr
 - **POST
 - **PUT
 - **DELETE
-
+  
 ## Recommended 
 - **GET
 
 ## Menu 
 - **GET
+
+  
+## Database
+The database folder contains the SQL backup of the project. To use it:
+
+1. Import the `coffee-shop.sql` file into your MySQL database:
+   ```bash
+   mysql -u [username] -p [database_name] < coffee-shop.sql
+
+
