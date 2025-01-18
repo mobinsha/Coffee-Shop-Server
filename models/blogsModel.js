@@ -72,13 +72,13 @@ async function updateBlogs(blogId, blogData) {
     const blogUpdate = {
         title: blogData.title || currentData.title,
         content: blogData.content || currentData.content,
-        userId: blogData.userId || currentData.userId
+        adminId: blogData.adminId || currentData.adminId
     };
 
     return new Promise((resolve, reject) => {
-        dbConnection.query('UPDATE `blogs` SET `title` = ?, `content` = ?, `userId` = ? ' +
+        dbConnection.query('UPDATE `blogs` SET `title` = ?, `content` = ?, `adminId` = ? ' +
             ' WHERE `blogs`.`id` = ?',
-            [blogUpdate.title, blogUpdate.content, blogUpdate.userId, blogId],
+            [blogUpdate.title, blogUpdate.content, blogUpdate.adminId, blogId],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
                 if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));

@@ -1,4 +1,5 @@
 const { body } = require('express-validator');
+const {login} = require("../controllers/userController");
 
 validateAddBlog = [
     body('title')
@@ -9,9 +10,7 @@ validateAddBlog = [
     body('content')
         .notEmpty()
         .withMessage('Content is required.').bail()
-        .matches(/^[a-zA-Z\s]+$/).withMessage('Content must contain only English letters and spaces.'),
-    body('adminId')
-        .isNumeric().withMessage('User ID must be a numeric value.')
+        .matches(/^[a-zA-Z\s]+$/).withMessage('Content must contain only English letters and spaces.')
 ];
 
 validateUpdateBlog = [

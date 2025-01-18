@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 require('dotenv').config();
 
 const dbConfig = {
@@ -13,7 +13,7 @@ const dbConnection = mysql.createPool(dbConfig);
 
 dbConnection.getConnection((err, connection) => {
     if (err) {
-        console.error('Error connecting to database: ' + err.stack);
+        console.error('Error connecting to database: ' + err.message);
     } else {
         console.log('Database Connected!');
         connection.release();

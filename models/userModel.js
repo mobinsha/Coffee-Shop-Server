@@ -1,10 +1,9 @@
 const { dbConnection } = require('../config/dbConnection');
 const { SendError } = require('../utils/sendError');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 
-async function getAllUsers() {
-    return new Promise((resolve, reject) => {
+async function getAllUsers() {    return new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM `users` ORDER BY createdAt DESC', (err, result) => {
             if (err) return reject(new SendError(500, err));
             else resolve(result);
