@@ -22,10 +22,10 @@ async function getServicesById(req, res, next) {
 }
 
 async function addService(req, res, next) {
-    const { imageAddress, name, description } = req.body;
+    const { imageAddress, name } = req.body;
     try {
-        const newService = await servicesModel.addService({ imageAddress, name, description });
-        sendResponse(res, 201, 'خدمات با موفقیت اضافه شد', newService);
+        const newService = await servicesModel.addService({ imageAddress, name });
+        sendResponse(res, 201, 'Service successfully added', newService);
     } catch (err) {
         next(err);
     }
@@ -35,7 +35,7 @@ async function deleteService(req, res, next) {
     const deleteServiceId = req.params.id;
     try {
         await servicesModel.deleteService(deleteServiceId);
-        sendResponse(res, 200, 'خدمات با موفقیت حذف شد');
+        sendResponse(res, 200, 'Service successfully deleted');
     } catch (err) {
         next(err);
     }
@@ -47,7 +47,7 @@ async function updateService(req, res, next) {
 
     try {
         await servicesModel.updateService(serviceId, serviceData);
-        sendResponse(res, 200, 'خدمات با موفقیت بروزرسانی شد');
+        sendResponse(res, 200, 'Service successfully updated');
     } catch (err) {
         next(err);
     }

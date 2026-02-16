@@ -17,7 +17,7 @@ function getProductById(id) {
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.length === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد'));
+                if (result.length === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
             }
         );
@@ -51,7 +51,7 @@ async function deleteProduct(id) {
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.affectedRows === 0) return reject(new SendError(404, 'محصول مورد نظر یافت نشد'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'Product not found.'));
                 else resolve(result);
             }
         );
@@ -61,7 +61,7 @@ async function deleteProduct(id) {
 async function updateProduct(productId, productData) {
     const currentDataArray = await getProductById(productId);
     if (currentDataArray.length === 0) {
-        throw new SendError(404, 'محصول مورد نظر یافت نشد');
+        throw new SendError(404, 'Service not found.');
     }
     const currentData = currentDataArray[0];
 
@@ -85,7 +85,7 @@ async function updateProduct(productId, productData) {
                 productUpdate.price, productUpdate.description, productId],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.changedRows === 0) return reject(new SendError(400, 'لطفاً اطلاعات جدید وارد کنید'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information.'));
                 else resolve(result);
             });
     });

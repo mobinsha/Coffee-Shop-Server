@@ -1,167 +1,136 @@
 const { body } = require('express-validator');
 const userModel = require("../models/userModel");
 
-// Regex patterns
-const usernamePattern = /^[A-Za-z][A-Za-z0-9_]*$/;
-const phonePattern = /^09[0-9]{9}$/;
-
-const validateRegister = [
+validateRegister = [
     body('userName')
-        .isString()
-        .withMessage('نام کاربری باید متن باشد').bail()
-        .matches(usernamePattern)
-        .withMessage('نام کاربری باید با حرف شروع شود و فقط شامل حروف، اعداد و خط تیره باشد').bail()
-        .isLength({ min: 5, max: 50 })
-        .withMessage('نام کاربری باید بین 5 تا 50 کاراکتر باشد').bail()
+        .isString().withMessage('Username must be a string.').bail()
+        .matches(/^[A-Za-z][A-Za-z0-9]*$/).withMessage('Username must start with a letter and can only contain letters and numbers.').bail()
+        .isLength({ min: 5, max: 50 }).withMessage('Username must be between 5 and 50 characters long.').bail()
         .custom(async (userName) => {
             const userExist = await userModel.checkUserNameExists(userName);
             if (userExist) {
-                throw new Error('این نام کاربری قبلاً ثبت شده است');
+                throw new Error('A user with this username already exists.');
             }
             return true;
         }),
 
     body('password')
-        .isString()
-        .withMessage('رمز عبور باید متن باشد').bail()
-        .notEmpty()
-        .withMessage('رمز عبور الزامی است').bail()
-        .isLength({ min: 6 })
-        .withMessage('رمز عبور باید حداقل 6 کاراکتر باشد').bail()
-        .isLength({ max: 128 })
-        .withMessage('رمز عبور نمی‌تواند بیشتر از 128 کاراکتر باشد').bail()
-        .matches(/[A-Z]/)
-        .withMessage('رمز عبور باید حداقل یک حرف بزرگ انگلیسی داشته باشد').bail()
-        .matches(/[a-z]/)
-        .withMessage('رمز عبور باید حداقل یک حرف کوچک انگلیسی داشته باشد').bail()
-        .matches(/[0-9]/)
-        .withMessage('رمز عبور باید حداقل یک عدد داشته باشد'),
+        .isString().withMessage('Password must be a string.').bail()
+        .notEmpty().withMessage('Password is required.').bail()
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.').bail()
+        .isLength({ max: 128 }).withMessage('Password must not exceed 128 characters.').bail()
+        .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter.').bail()
+        .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter.').bail()
+        .matches(/[0-9]/).withMessage('Password must contain at least one number.'),
 
     body('email')
-        .isEmail()
-        .withMessage('لطفاً یک ایمیل معتبر وارد کنید').bail()
-        .notEmpty()
-        .withMessage('ایمیل الزامی است').bail()
-        .isLength({ max: 254 })
-        .withMessage('ایمیل نمی‌تواند بیشتر از 254 کاراکتر باشد').bail()
+        .isEmail().withMessage('Please enter a valid email.').bail()
+        .notEmpty().withMessage('Email is required.').bail()
+        .isLength({ max: 254 }).withMessage('Email must not exceed 254 characters.').bail()
         .custom(async (email) => {
             const emailExist = await userModel.checkEmailExists(email);
             if (emailExist) {
-                throw new Error('این ایمیل قبلاً ثبت شده است');
+                throw new Error('A user with this email already exists.');
             }
             return true;
         }),
 
     body('fullName')
-        .isString()
-        .withMessage('نام کامل باید متن باشد').bail()
-        .notEmpty()
-        .withMessage('نام کامل الزامی است').bail()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('نام کامل باید بین 2 تا 100 کاراکتر باشد'),
+        .isString().withMessage('Full name must be a string.').bail()
+        .notEmpty().withMessage('Full name is required.').bail()
+        .isLength({ max: 100 }).withMessage('Full name must not exceed 100 characters.').bail(),
 
     body('phoneNumber')
-        .notEmpty()
-        .withMessage('شماره تلفن الزامی است').bail()
-        .isString()
-        .withMessage('شماره تلفن باید متن باشد').bail()
-        .matches(phonePattern)
-        .withMessage('شماره تلفن باید با 09 شروع شود و 11 رقم باشد'),
+        .notEmpty().withMessage('Phone number is required.').bail()
+        .isString().withMessage('Phone number must be a string.').bail()
+        .matches(/^09[0-9]{9}$/).withMessage('Phone number must start with 09 and contain 11 digits.').bail()
+        .isLength({ min: 11, max: 11 }).withMessage('Phone number must be 11 digits long.'),
 
     body('permission')
-        .optional()
-        .isIn(['admin', 'user'])
-        .withMessage('سطح دسترسی باید admin یا user باشد')
+        .isIn(['admin', 'user']).withMessage('Permission level must be one of the following: admin or user')
 ];
 
-const validateUpdate = [
+validateUpdate = [
     body('userName')
         .optional()
-        .isString()
-        .withMessage('نام کاربری باید متن باشد').bail()
-        .matches(usernamePattern)
-        .withMessage('نام کاربری باید با حرف شروع شود و فقط شامل حروف، اعداد و خط تیره باشد').bail()
-        .isLength({ min: 5, max: 50 })
-        .withMessage('نام کاربری باید بین 5 تا 50 کاراکتر باشد').bail()
+        .isString().withMessage('Username must be a string.').bail()
+        .matches(/^[A-Za-z][A-Za-z0-9]*$/).withMessage('Username must start with a letter and can only contain letters and numbers.').bail()
+        .isLength({ min: 5, max: 50 }).withMessage('Username must be between 5 and 50 characters long.').bail()
         .custom(async (userName) => {
             const userExist = await userModel.checkUserNameExists(userName);
             if (userExist) {
-                throw new Error('این نام کاربری قبلاً ثبت شده است');
+                throw new Error('A user with this username already exists.');
             }
             return true;
         }),
 
     body('password')
         .optional()
-        .isString()
-        .withMessage('رمز عبور باید متن باشد').bail()
-        .isLength({ min: 6 })
-        .withMessage('رمز عبور باید حداقل 6 کاراکتر باشد').bail()
-        .isLength({ max: 128 })
-        .withMessage('رمز عبور نمی‌تواند بیشتر از 128 کاراکتر باشد').bail()
-        .matches(/[A-Z]/)
-        .withMessage('رمز عبور باید حداقل یک حرف بزرگ انگلیسی داشته باشد').bail()
-        .matches(/[a-z]/)
-        .withMessage('رمز عبور باید حداقل یک حرف کوچک انگلیسی داشته باشد').bail()
-        .matches(/[0-9]/)
-        .withMessage('رمز عبور باید حداقل یک عدد داشته باشد'),
+        .isString().withMessage('Password must be a string.').bail()
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.').bail()
+        .isLength({ max: 128 }).withMessage('Password must not exceed 128 characters.').bail()
+        .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter.').bail()
+        .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter.').bail()
+        .matches(/[0-9]/).withMessage('Password must contain at least one number.'),
 
     body('email')
         .optional()
-        .isEmail()
-        .withMessage('لطفاً یک ایمیل معتبر وارد کنید').bail()
-        .isLength({ max: 254 })
-        .withMessage('ایمیل نمی‌تواند بیشتر از 254 کاراکتر باشد').bail()
+        .isEmail().withMessage('Please enter a valid email.').bail()
+        .isLength({ max: 254 }).withMessage('Email must not exceed 254 characters.').bail()
         .custom(async (email) => {
             const emailExist = await userModel.checkEmailExists(email);
             if (emailExist) {
-                throw new Error('این ایمیل قبلاً ثبت شده است');
+                throw new Error('A user with this email already exists.');
             }
             return true;
         }),
 
     body('fullName')
         .optional()
-        .isString()
-        .withMessage('نام کامل باید متن باشد').bail()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('نام کامل باید بین 2 تا 100 کاراکتر باشد'),
+        .isString().withMessage('Full name must be a string.').bail()
+        .isLength({ max: 100 }).withMessage('Full name must not exceed 100 characters.').bail(),
 
     body('phoneNumber')
         .optional()
-        .isString()
-        .withMessage('شماره تلفن باید متن باشد').bail()
-        .matches(phonePattern)
-        .withMessage('شماره تلفن باید با 09 شروع شود و 11 رقم باشد'),
+        .isString().withMessage('Phone number must be a string.').bail()
+        .matches(/^09[0-9]{9}$/).withMessage('Phone number must start with 09 and contain 11 digits.').bail()
+        .isLength({ min: 11, max: 11 }).withMessage('Phone number must be 11 digits long.'),
 
     body('permission')
         .optional()
-        .isIn(['admin', 'user'])
-        .withMessage('سطح دسترسی باید admin یا user باشد')
-];
+        .isIn(['admin', 'user']).withMessage('Permission level must be one of the following: admin or user')
+]
 
-const validateLogin = [
+validateLogin = [
     body('userNameOrEmail')
-        .exists()
-        .withMessage('نام کاربری یا ایمیل الزامی است')
-        .isString()
-        .withMessage('نام کاربری یا ایمیل باید متن باشد')
-        .isLength({ max: 254 })
-        .withMessage('نام کاربری یا ایمیل نمی‌تواند بیشتر از 254 کاراکتر باشد'),
+        .exists().withMessage('Username or email is required.')
+        .isString().withMessage('Username or email must be a string.')
+        .isLength({ max: 254 }).withMessage('Username or email must not exceed 254 characters.')
+        .custom(async (value) => {
+            if (value.includes('@')) {
+                await body('userNameOrEmail').isEmail().withMessage('Invalid email format').run({ body: { userNameOrEmail: value } });
+            } else {
+                if (!/^[A-Za-z][A-Za-z0-9]*$/.test(value)) {
+                    throw new Error('Username must start with a letter and can only contain letters and numbers.');
+                }
+                if (value.length < 5 || value.length > 50) {
+                    throw new Error('Username must be between 5 and 50 characters long.');
+                }
+            }
+            return true;
+        }),
 
     body('password')
-        .exists()
-        .withMessage('رمز عبور الزامی است')
-        .isString()
-        .withMessage('رمز عبور باید متن باشد')
-        .isLength({ min: 6 })
-        .withMessage('رمز عبور باید حداقل 6 کاراکتر باشد')
-        .isLength({ max: 128 })
-        .withMessage('رمز عبور نمی‌تواند بیشتر از 128 کاراکتر باشد')
-];
+        .exists().withMessage('Password is required.')
+        .isString().withMessage('Password must be a string.')
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.')
+        .isLength({ max: 128 }).withMessage('Password must not exceed 128 characters.')
+]
+
+
 
 module.exports = {
     validateRegister,
     validateUpdate,
     validateLogin
-};
+}

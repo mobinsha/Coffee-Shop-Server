@@ -4,7 +4,7 @@ const { sendResponse } = require('../utils/responseHandler');
 async function getAllProduct(req, res, next) {
     try {
         const product = await productModel.getAllProduct();
-        sendResponse(res, 200, 'موفق', product);
+        sendResponse(res, 200, 'Success', product);
     } catch (err) {
         next(err);
     }
@@ -15,7 +15,7 @@ async function getProductById(req, res, next) {
 
     try {
         const product = await productModel.getProductById(productId);
-        sendResponse(res, 200, 'موفق', product);
+        sendResponse(res, 200, 'Success', product);
     } catch (err) {
         next(err);
     }
@@ -31,7 +31,7 @@ async function addProduct(req, res, next) {
             price,
             description
         });
-        sendResponse(res, 201, 'محصول با موفقیت اضافه شد', newProduct);
+        sendResponse(res, 201, 'Product successfully added', newProduct);
     } catch (err) {
         next(err);
     }
@@ -41,9 +41,9 @@ async function deleteProduct(req, res, next) {
     const deleteProductId = req.params.id;
     try {
         await productModel.deleteProduct(deleteProductId);
-        sendResponse(res, 200, 'محصول با موفقیت حذف شد');
+        sendResponse(res, 200, 'Product successfully deleted');
     } catch (err) {
-        if (err.message === 'محصول مورد نظر یافت نشد') {
+        if (err.message === 'Product not found.') {
             sendResponse(res, 404, err.message);
         } else {
             next(err);
@@ -57,7 +57,7 @@ async function updateProduct(req, res, next) {
 
     try {
         await productModel.updateProduct(productId, productData);
-        sendResponse(res, 200, 'محصول با موفقیت بروزرسانی شد');
+        sendResponse(res, 200, 'Product successfully updated');
     } catch (err) {
         next(err);
     }

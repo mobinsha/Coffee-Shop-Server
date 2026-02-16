@@ -18,7 +18,7 @@ function getUserById(id) {
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.length === 0) return reject(new SendError(404, 'کاربر مورد نظر یافت نشد'));
+                if (result.length === 0) return reject(new SendError(404, 'User not found.'));
                 else resolve(result);
             }
         );
@@ -50,7 +50,7 @@ async function deleteUser(id) {
             [id],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.affectedRows === 0) return reject(new SendError(404, 'کاربر مورد نظر یافت نشد'));
+                if (result.affectedRows === 0) return reject(new SendError(404, 'User not found.'));
                 else resolve(result);
             }
         );
@@ -64,9 +64,9 @@ function  getUserByUsernameOrEmail(userNameOrEmail) {
             [userNameOrEmail, userNameOrEmail],
             async (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.length === 0) return reject(new SendError(404, 'نام کاربری یا ایمیل یافت نشد'));
-                if (result[0].accountStatus === 'inactive') return reject(new SendError(403, 'حساب کاربری شما غیرفعال است. لطفاً با پشتیبانی تماس بگیرید'))
-                if (result[0].accountStatus === 'banned') return reject(new SendError(403, 'حساب کاربری شما مسدود شده است. لطفاً با پشتیبانی تماس بگیرید'))
+                if (result.length === 0) return reject(new SendError(404, 'UserName or Email not found.'));
+                if (result[0].accountStatus === 'inactive') return reject(new SendError(404, 'Your account is inactive. Please contact support for assistance.'))
+                if (result[0].accountStatus === 'banned') return reject(new SendError(404, 'Your account is banned. Please contact support for assistance.'))
                 else resolve(result[0])
             }
         );
@@ -91,7 +91,7 @@ async function addUser(userData) {
 async function userUpdate(userID, userData) {
     const currentDataArray = await getUserById(userID);
     if (currentDataArray.length === 0) {
-        throw new SendError(404, 'کاربر مورد نظر یافت نشد');
+        throw new SendError(404, 'User not found.');
     }
     const currentData = currentDataArray[0];
 
@@ -115,7 +115,7 @@ async function userUpdate(userID, userData) {
             [userUpdate.userName, userUpdate.password, userUpdate.email, userUpdate.fullName, userUpdate.phoneNumber, userUpdate.permission, userID],
             (err, result) => {
                 if (err) return reject(new SendError(500, err));
-                if (result.changedRows === 0) return reject(new SendError(400, 'لطفاً اطلاعات جدید وارد کنید'));
+                if (result.changedRows === 0) return reject(new SendError(400, 'Enter new information'));
                 else resolve(result);
             });
     });

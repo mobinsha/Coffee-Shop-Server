@@ -15,7 +15,7 @@ router.post('/register', validateRegister, validationResults, userController.reg
 
 router.post('/login', validateLogin, validationResults, userController.login);
 
-router.delete('/delete/:id', authenticateToken, authorize(['admin']), userController.deleteUser)
+router.delete('/delete/:id', authenticateToken, authorize('admin'), userController.deleteUser)
 
 router.put('/update/:id', authenticateToken, authorize('admin'), validateUpdate, validationResults, userController.userUpdate)
 

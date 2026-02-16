@@ -1,18 +1,10 @@
 {
   "name": "coffe-shop",
   "private": true,
-  "authors": [
-    {
-      "name": "Mobin Shakeri",
-      "email": "mobinshakeri.dev@gmail.com"
-    }
-  ],
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "start": "node App.js",
     "dev": "nodemon App.js",
-    "seed": "node seed.js",
-    "setup": "npm install && node seed.js && npm run dev",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "keywords": [],

@@ -10,16 +10,16 @@ function errorHandler(err, req, res, next) {
 
     switch (statusCode) {
         case 400:
-            return sendResponse(res, 400, message || 'خطای اعتبارسنجی');
+            return sendResponse(res, 400, message || 'Validation Errors');
         case 401:
-            return sendResponse(res, 401, message || 'نام کاربری یا رمز عبور اشتباه است')
+            return sendResponse(res, 401, message || 'Incorrect password.')
         case 403:
-            return sendResponse(res, 403, message || 'دسترسی غیرمجاز. لطفاً دوباره وارد شوید')
+            return sendResponse(res, 403, message || 'Invalid token. Please provide a valid token')
         case 404:
-            return sendResponse(res, 404, message || 'یافت نشد');
+            return sendResponse(res, 404, message || 'Not Found');
         case 500:
         default:
-            return sendResponse(res, 500, 'خطای سرور', {}, message);
+            return sendResponse(res, 500, 'Server Error', {}, message);
     }
 }
 

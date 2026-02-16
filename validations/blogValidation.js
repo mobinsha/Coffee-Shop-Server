@@ -1,60 +1,32 @@
 const { body } = require('express-validator');
+const {login} = require("../controllers/userController");
 
-// Regex for image extensions
-const imagePattern = /\.(jpeg|jpg|gif|png|webp|svg)$/i;
-
-const validateAddBlog = [
+validateAddBlog = [
     body('title')
         .notEmpty()
-        .withMessage('عنوان مقاله الزامی است').bail()
-        .isLength({ min: 5, max: 225 })
-        .withMessage('عنوان باید بین 5 تا 225 کاراکتر باشد'),
-
+        .withMessage('Title is required.').bail()
+        .isLength({ max: 225 }).withMessage('Title must be at most 225 characters long.').bail()
+        .matches(/^[a-zA-Z\s]+$/).withMessage('Title must contain only English letters and spaces.'),
     body('content')
         .notEmpty()
-        .withMessage('محتوای مقاله الزامی است').bail()
-        .isLength({ min: 50 })
-        .withMessage('محتوای مقاله باید حداقل 50 کاراکتر باشد'),
-
-    body('imageAddress')
-        .optional()
-        .custom((value) => {
-            if (!value) return true;
-            if (!imagePattern.test(value)) {
-                throw new Error('آدرس تصویر باید یک فایل تصویری معتبر باشد (jpg, jpeg, png, gif, webp)');
-            }
-            return true;
-        })
+        .withMessage('Content is required.').bail()
+        .matches(/^[a-zA-Z\s]+$/).withMessage('Content must contain only English letters and spaces.')
 ];
 
-const validateUpdateBlog = [
+validateUpdateBlog = [
     body('title')
         .optional()
-        .isLength({ min: 5, max: 225 })
-        .withMessage('عنوان باید بین 5 تا 225 کاراکتر باشد'),
-
+        .isLength({ max: 225 }).withMessage('Title must be at most 225 characters long.').bail()
+        .matches(/^[a-zA-Z\s]+$/).withMessage('Title must contain only English letters and spaces.'),
     body('content')
         .optional()
-        .isLength({ min: 50 })
-        .withMessage('محتوای مقاله باید حداقل 50 کاراکتر باشد'),
-
-    body('imageAddress')
-        .optional()
-        .custom((value) => {
-            if (!value) return true;
-            if (!imagePattern.test(value)) {
-                throw new Error('آدرس تصویر باید یک فایل تصویری معتبر باشد (jpg, jpeg, png, gif, webp)');
-            }
-            return true;
-        }),
-
+        .matches(/^[a-zA-Z\s]+$/).withMessage('Content must contain only English letters and spaces.'),
     body('adminId')
         .optional()
-        .isNumeric()
-        .withMessage('شناسه کاربر باید یک عدد باشد')
-];
+        .isNumeric().withMessage('User ID must be a numeric value.')
+]
 
 module.exports = {
     validateAddBlog,
     validateUpdateBlog
-};
+}

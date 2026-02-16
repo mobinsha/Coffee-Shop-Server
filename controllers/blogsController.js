@@ -5,7 +5,7 @@ async function getAllBlogs(req, res, next) {
     try {
         const limit = (req.query.limit)
         const blog = await blogsModel.getAllBlogs(limit);
-        sendResponse(res, 200, 'موفق', blog);
+        sendResponse(res, 200, 'Success', blog);
     } catch (err) {
         next(err);
     }
@@ -16,19 +16,19 @@ async function getBlogById(req, res, next) {
 
     try {
         const blog = await blogsModel.getBlogById(blogId);
-        sendResponse(res, 200, 'موفق', blog);
+        sendResponse(res, 200, 'Success', blog);
     } catch (err) {
         next(err);
     }
 }
 
 async function addBlog(req, res, next) {
-    const { title, content, imageAddress } = req.body;
+    const { title, content } = req.body;
     const adminId = req.user.id
 
     try {
-        const newBlog = await blogsModel.addBlog({ title, content, imageAddress, adminId });
-        sendResponse(res, 201, 'مقاله با موفقیت اضافه شد', newBlog);
+        const newBlog = await blogsModel.addBlog({ title, content, adminId });
+        sendResponse(res, 201, 'Blog successfully added', newBlog);
     } catch (err) {
         next(err);
     }
@@ -38,7 +38,7 @@ async function deleteBlog(req, res, next) {
     const deleteBlogId = req.params.id;
     try {
         await blogsModel.deleteBlog(deleteBlogId);
-        sendResponse(res, 200, 'مقاله با موفقیت حذف شد');
+        sendResponse(res, 200, 'Blog successfully deleted');
     } catch (err) {
         next(err);
     }
@@ -50,7 +50,7 @@ async function updateBlog(req, res, next) {
 
     try {
         await blogsModel.updateBlogs(blogId, blogData);
-        sendResponse(res, 200, 'مقاله با موفقیت بروزرسانی شد');
+        sendResponse(res, 200, 'Blog successfully updated');
     } catch (err) {
         next(err);
     }

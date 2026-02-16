@@ -1,607 +1,77 @@
-# ☕ Coffee Shop Management System
+# Coffee Shop Server
+A backend server for managing a coffee shop application built with Node.js, Express, and MySQL. This server provides APIs for managing users, products, services, and blogs.
+
+## Features
+
+- **User Authentication**: Secure login with JWT.
+- **Product Management**: CRUD operations for coffee shop products.
+- **Blog Management**: Users can add, view, update, and delete blogs.
+- **Role-Based Access Control**: Admin and user roles for specific API access.
+
+## Tech Stack
+
+- **Backend**: Node.js, Express.js
+- **Forntend**: React.js, vite
+- **Database**: MySQL
+- **Authentication**: JWT
+- **Validation**: express-validator
+
+## Setup
+
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/mobinsha/Coffee-Shop-Server.git
+    cd Coffee-Shop-Server
+    ```
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+3. **Run the server**:
+    ```bash
+    npm start
+    ```
+   Server will start on `http://localhost:3000`.
+
+## API Endpoints
+
+### Users
+- **POST /users/login**: User login with JWT authentication.
+- **POST /users/register**: Register a new user.
+
+### Products
+- **GET
+- **GET
+- **POST
+- **PUT
+- **DELETE
+
+### Blogs
+- **GET
+- **GET
+- **POST
+- **PUT
+- **DELETE
+
+## Service
+- **GET
+- **GET
+- **POST
+- **PUT
+- **DELETE
+  
+## Recommended 
+- **GET
+
+## Menu 
+- **GET
+
+  
+## Database
+The database folder contains the SQL backup of the project. To use it:
+
+1. Import the `coffee-shop.sql` file into your MySQL database:
+   ```bash
+   mysql -u [username] -p [database_name] < coffee-shop.sql
 
-<div align="center">
 
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.x-blue.svg)](https://expressjs.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-**سیستم مدیریت کامل کافی شاپ با پنل ادمین و فروشگاه آنلاین**
-
-[مشاهده دمو](http://localhost:3000) · [گزارش خطا](../../issues) · [درخواست ویژگی](../../issues)
-
-</div>
-
-<p align="center">
-  <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800" alt="Coffee Shop" width="600">
-</p>
-
----
-
-## 📋 فهرست مطالب
-
-- [معرفی](#-معرفی)
-- [تکنولوژی‌ها و ابزارها](#-تکنولوژیها-و-ابزارها)
-- [پیش‌نیازها](#-پیشنیازها)
-- [نصب و راه‌اندازی](#-نصب-و-راهاندازی)
-  - [روش اول: XAMPP Localhost](#روش-اول-xampp-localhost-توصیه-شده-برای-توسعه)
-  - [روش دوم: Docker](#روش-دوم-docker-توصیه-شده-برای-تولید)
-- [دسترسی‌ها و اکانت‌های پیش‌فرض](#-دسترسیها-و-اکانتهای-پیشفرض)
-- [ساختار پروژه](#-ساختار-پروژه)
-- [API Documentation](#-api-documentation)
-- [توسعه‌دهندگان](#-توسعهدهندگان)
-
----
-
-## 🎯 معرفی
-
-**Coffee Shop** یک سیستم مدیریت کامل و حرفه‌ای برای کافی شاپ‌ها است که با تکنولوژی‌های روز دنیا پیاده‌سازی شده. این سیستم شامل دو بخش اصلی می‌باشد:
-
-### ✨ ویژگی‌های اصلی
-
-#### 🛍️ فروشگاه آنلاین
-- نمایش محصولات و منو با طراحی مدرن و خلاقانه
-- افکت‌های 3D و انیمیشن‌های حرفه‌ای
-- سیستم سبد خرید با LocalStorage
-- طراحی کاملاً ریسپانسیو (موبایل، تبلت، دسکتاپ)
-- پشتیبانی از زبان فارسی (RTL)
-
-#### 👨‍💼 پنل مدیریت
-- مدیریت کامل محصولات (اضافه، ویرایش، حذف)
-- مدیریت منو و دسته‌بندی‌ها
-- مدیریت سفارشات و کاربران
-- سیستم وبلاگ و اخبار
-- گزارش‌گیری و آمار فروش
-- مدیریت خدمات و پیشنهادات ویژه
-
-#### 🔐 امنیت
-- احراز هویت JWT
-- رمزنگاری پسورد با bcrypt
-- سطوح دسترسی (Admin, User)
-- اعتبارسنجی ورودی‌ها
-
----
-
-## 🛠 تکنولوژی‌ها و ابزارها
-
-### Backend
-| تکنولوژی | نسخه | توضیحات |
-|---------|------|---------|
-| [Node.js](https://nodejs.org/) | >= 18.x | محیط اجرای جاوااسکریپت |
-| [Express.js](https://expressjs.com/) | ^4.18.2 | فریم‌ورک وب سبک و سریع |
-| [MySQL](https://www.mysql.com/) | 8.0 | دیتابیس رابطه‌ای |
-| [mysql2](https://www.npmjs.com/package/mysql2) | ^3.6.0 | درایور MySQL برای Node.js |
-| [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) | ^9.0.2 | احراز هویت با JWT |
-| [bcryptjs](https://www.npmjs.com/package/bcryptjs) | ^2.4.3 | هش کردن پسورد |
-| [express-validator](https://www.npmjs.com/package/express-validator) | ^7.0.1 | اعتبارسنجی فرم‌ها |
-| [cors](https://www.npmjs.com/package/cors) | ^2.8.5 | مدیریت CORS |
-| [dotenv](https://www.npmjs.com/package/dotenv) | ^16.3.1 | متغیرهای محیطی |
-
-### Frontend
-| تکنولوژی | نسخه | توضیحات |
-|---------|------|---------|
-| HTML5 | - | ساختار صفحات |
-| CSS3 | - | استایل‌دهی مدرن |
-| JavaScript (ES6+) | - | منطق برنامه |
-| [Font Awesome](https://fontawesome.com/) | 6.4.0 | آیکون‌های متنوع |
-| [Vazirmatn](https://github.com/rastikerdar/vazirmatn) | 33.003 | فونت فارسی استاندارد |
-
-### DevOps
-| تکنولوژی | نسخه | توضیحات |
-|---------|------|---------|
-| [Docker](https://www.docker.com/) | >= 20.x | کانتینرسازی |
-| [Docker Compose](https://docs.docker.com/compose/) | >= 2.x | هماهنگی چند سرویس |
-| [phpMyAdmin](https://www.phpmyadmin.net/) | latest | مدیریت دیتابیس |
-
----
-
-## 📦 پیش‌نیازها
-
-### حالت XAMPP (لوکال):
-- ✅ [Node.js](https://nodejs.org/) نسخه **18 یا بالاتر**
-- ✅ [XAMPP](https://www.apachefriends.org/) با MySQL
-- ✅ npm (همراه Node.js نصب می‌شود)
-
-### حالت Docker:
-- ✅ [Docker](https://www.docker.com/) نسخه **20 یا بالاتر**
-- ✅ [Docker Compose](https://docs.docker.com/compose/) نسخه **2 یا بالاتر**
-
-### اختیاری:
-- Git (برای clone کردن پروژه)
-- VS Code یا IDE مورد علاقه
-
----
-
-## 🚀 نصب و راه‌اندازی
-
-### روش اول: XAMPP Localhost (توصیه شده برای توسعه)
-
-این روش برای توسعه‌دهندگی و تست محلی مناسب است. از XAMPP برای MySQL استفاده می‌کنیم.
-
-#### مرحله 1: آماده‌سازی
-```bash
-# Clone کردن پروژه (اختیاری)
-git clone <repository-url>
-cd coffee-shop-server
-
-# یا از حالت فشرده خارج کنید
-```
-
-#### مرحله 2: راه‌اندازی XAMPP
-1. **XAMPP Control Panel** را باز کنید
-2. روی **MySQL** کلیک کنید و **Start** بزنید
-3. پورت پیش‌فرض: `3306`
-4. نیازی به Apache نیست (ما از سرور Node.js استفاده می‌کنیم)
-
-#### مرحله 3: ایجاد دیتابیس
-1. مرورگر را باز کنید و به آدرس زیر بروید:
-   ```
-   http://localhost/phpmyadmin
-   ```
-2. روی **New** یا **New Database** کلیک کنید
-3. نام دیتابیس را وارد کنید: `coffeeshop`
-4. collation را روی `utf8mb4_persian_ci` تنظیم کنید
-5. روی **Create** کلیک کنید
-
-#### مرحله 4: نصب وابستگی‌ها
-```bash
-# در ترمینال/Command Prompt
-npm install
-```
-
-#### مرحله 5: تنظیمات محیطی
-```bash
-# کپی کردن فایل نمونه
-cp .env.example .env
-
-# فایل .env را با ویرایشگر متن باز کنید و این تنظیمات را وارد کنید:
-```
-
-**محتوای فایل `.env` برای XAMPP:**
-```env
-NODE_ENV=development
-PORT=3000
-
-# تنظیمات XAMPP
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=
-DB_NAME=coffeeshop
-DB_PORT=3306
-
-# JWT
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-JWT_EXPIRES_IN=24h
-
-# CORS
-CORS_ORIGIN=http://localhost:3000
-
-# Seeding
-Startup=true
-```
-
-#### مرحله 6: اجرای پروژه
-```bash
-# اجرا با seeding خودکار دیتابیس
-npm start
-
-# یا
-node App.js
-
-# برای حالت development با nodemon
-npm run dev
-```
-
-#### مرحله 7: مشاهده پروژه 🎉
-- 🌐 **سایت اصلی:** http://localhost:3000
-- 🔐 **پنل مدیریت:** http://localhost:3000/login
-- 🔧 **phpMyAdmin:** http://localhost/phpmyadmin
-
----
-
-### روش دوم: Docker (توصیه شده برای تولید)
-
-این روش برای استقرار در سرور و محیط تولید مناسب است. همه سرویس‌ها در کانتینرهای Docker ایزوله اجرا می‌شوند.
-
-#### مرحله 1: آماده‌سازی
-```bash
-# Clone کردن پروژه
-git clone <repository-url>
-cd coffee-shop-server
-```
-
-#### مرحله 2: تنظیمات محیطی
-```bash
-# کپی کردن فایل تنظیمات
-cp .env.example .env
-
-# نیازی به تغییر تنظیمات دیتابیس نیست
-# Docker Compose به صورت خودکار تنظیمات را اعمال می‌کند
-```
-
-**تنظیمات پیش‌فرض Docker:**
-- MySQL در پورت `3307` (به جای 3306 برای جلوگیری از تداخل با XAMPP)
-- App در پورت `3000`
-- phpMyAdmin در پورت `8080`
-
-#### مرحله 3: اجرا با Docker Compose
-```bash
-# ساخت و اجرای کانتینرها برای اولین بار
-docker-compose up --build -d
-
-# یا اگر قبلاً build شده:
-docker-compose up -d
-
-# مشاهده لاگ‌ها در real-time
-docker-compose logs -f
-```
-
-#### مرحله 4: بررسی وضعیت ⏳
-```bash
-# مشاهده وضعیت کانتینرها (باید همه Up باشند)
-docker-compose ps
-
-# صبر کنید تا MySQL کاملاً آماده شود (حدود 30 ثانیه)
-docker-compose logs -f mysql
-```
-
-وقتی این پیام را دیدید یعنی MySQL آماده است:
-```
-[Server] X Plugin ready for connections
-```
-
-#### مرحله 5: مشاهده پروژه 🎉
-- 🌐 **سایت اصلی:** http://localhost:3000
-- 🔐 **پنل مدیریت:** http://localhost:3000/login
-- 🗄️ **phpMyAdmin:** http://localhost:8080
-  - یوزر: `root`
-  - پسورد: `root123`
-
----
-
-### 🔧 دستورات کاربردی Docker
-
-```bash
-# مشاهده وضعیت کانتینرها
-docker-compose ps
-
-# مشاهده لاگ‌های یک سرویس خاص
-docker-compose logs -f app
-docker-compose logs -f mysql
-
-# ری‌استارت سرویس‌ها
-docker-compose restart
-
-# توقف سرویس‌ها (دیتابیس حفظ می‌شود)
-docker-compose down
-
-# توقف و حذف کامل (دیتابیس پاک می‌شود)
-docker-compose down -v
-
-# دسترسی به shell کانتینر
-docker-compose exec app sh
-docker-compose exec mysql mysql -u root -p
-
-# ری‌استارت فقط یک سرویس
-docker-compose restart app
-```
-
----
-
-## 🔑 دسترسی‌ها و اکانت‌های پیش‌فرض
-
-### 👨‍💼 پنل مدیریت (Admin)
-| فیلد | مقدار |
-|------|-------|
-| یوزرنیم | `admin` |
-| پسورد | `Admin@123` |
-| سطح دسترسی | مدیر سیستم (admin) |
-
-### 👤 کاربر تست (User)
-| فیلد | مقدار |
-|------|-------|
-| یوزرنیم | `user1` |
-| پسورد | `User@123` |
-| سطح دسترسی | کاربر عادی (user) |
-
-> ⚠️ **مهم:** در محیط تولید حتماً پسوردها را تغییر دهید!
-
----
-
-## 📁 ساختار پروژه
-
-```
-coffee-shop-server/
-├── 📁 config/                  # تنظیمات پروژه
-│   └── database.js            # تنظیمات اتصال دیتابیس
-│
-├── 📁 controllers/             # کنترلرها (منطق کسب‌وکار)
-│   ├── userController.js      # مدیریت کاربران
-│   ├── productController.js   # مدیریت محصولات
-│   ├── menuController.js      # مدیریت منو
-│   ├── servicesController.js  # مدیریت خدمات
-│   ├── recommendedController.js # مدیریت پیشنهادات
-│   ├── blogsController.js     # مدیریت وبلاگ
-│   └── cartController.js      # مدیریت سبد خرید
-│
-├── 📁 database/                # اسکریپت‌های دیتابیس
-│   └── init.sql               # اسکریپت اولیه‌سازی
-│
-├── 📁 middlewares/             # میان‌افزارها
-│   ├── authenticateToken.js   # احراز هویت JWT
-│   ├── authorize.js           # اختیارات دسترسی
-│   ├── errorHandler.js        # مدیریت خطاها
-│   └── validationResults.js   # نتایج اعتبارسنجی
-│
-├── 📁 models/                  # مدل‌ها (دسترسی به دیتابیس)
-│   ├── userModel.js
-│   ├── productModel.js
-│   ├── menuModel.js
-│   ├── servicesModel.js
-│   ├── recommendedModel.js
-│   ├── blogsModel.js
-│   └── cartModel.js
-│
-├── 📁 public/                  # فایل‌های استاتیک Frontend
-│   ├── index.html             # صفحه اصلی فروشگاه
-│   ├── login.html             # صفحه ورود
-│   ├── admin.html             # پنل مدیریت
-│   ├── app.js                 # جاوااسکریپت اصلی
-│   └── styles.css             # استایل‌های CSS
-│
-├── 📁 routes/                  # مسیرهای API
-│   ├── userRouter.js
-│   ├── productRouter.js
-│   ├── menuRouter.js
-│   ├── servicesRouter.js
-│   ├── recommendedRouter.js
-│   ├── blogsRouter.js
-│   └── cartRouter.js
-│
-├── 📁 uploads/                 # فایل‌های آپلود شده
-│
-├── 📁 utils/                   # ابزارهای کمکی
-│   ├── comparePassword.js
-│   ├── hashPassword.js
-│   └── responseHandler.js
-│
-├── 📁 validations/             # اعتبارسنجی‌ها
-│   └── userValidation.js
-│
-├── 📄 .env                     # متغیرهای محیطی (ایجاد کنید)
-├── 📄 .env.example             # نمونه تنظیمات
-├── 📄 .gitignore
-├── 📄 App.js                   # فایل اصلی برنامه
-├── 📄 Dockerfile               # Dockerfile
-├── 📄 docker-compose.yml       # Docker Compose
-├── 📄 package.json
-├── 📄 README.md               # این فایل
-└── 📄 seed.js                  # اسکریپت اولیه‌سازی دیتابیس
-```
-
----
-
-## 📚 API Documentation
-
-### 📝 احراز هویت
-
-#### ورود کاربر
-```http
-POST /api/users/login
-Content-Type: application/json
-
-{
-  "userNameOrEmail": "admin",
-  "password": "Admin@123"
-}
-```
-
-**پاسخ موفق:**
-```json
-{
-  "status": true,
-  "message": "ورود موفقیت‌آمیز",
-  "data": {
-    "token": "eyJhbGciOiJIUzI1NiIs...",
-    "userName": "admin",
-    "permission": "admin"
-  }
-}
-```
-
-#### ثبت نام کاربر
-```http
-POST /api/users/register
-Content-Type: application/json
-
-{
-  "userName": "newuser",
-  "password": "Password123",
-  "email": "user@example.com",
-  "fullName": "نام کامل",
-  "phoneNumber": "09123456789",
-  "permission": "user"
-}
-```
-
-### ☕ محصولات
-
-#### دریافت همه محصولات
-```http
-GET /api/product
-```
-
-#### دریافت یک محصول
-```http
-GET /api/product/:id
-```
-
-#### افزودن محصول (Admin)
-```http
-POST /api/product/add
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "name": "اسپرسو",
-  "shortTitle": "قهوه غلیظ",
-  "price": 45000,
-  "description": "توضیحات محصول"
-}
-```
-
-### 📋 منو
-
-#### دریافت منو
-```http
-GET /api/menu
-```
-
-### 🛎️ خدمات
-
-#### دریافت خدمات
-```http
-GET /api/services
-```
-
-### ⭐ پیشنهادات ویژه
-
-#### دریافت پیشنهادات
-```http
-GET /api/recommended
-```
-
-### 📰 وبلاگ
-
-#### دریافت مقالات
-```http
-GET /api/blogs
-```
-
-### 🛒 سبد خرید
-
-#### مشاهده سبد خرید
-```http
-GET /api/cart
-Authorization: Bearer <token>
-```
-
-#### افزودن به سبد
-```http
-POST /api/cart/add
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "productId": 1,
-  "quantity": 2
-}
-```
-
----
-
-## 🐛 عیب‌یابی
-
-### مشکلات رایج XAMPP
-
-#### ❌ خطای اتصال به دیتابیس
-```bash
-# بررسی وضعیت MySQL
-# XAMPP Control Panel → MySQL → Start
-
-# بررسی پورت
-netstat -an | findstr 3306  # Windows
-lsof -i :3306               # Linux/Mac
-```
-
-**راه‌حل:**
-1. اطمینان از فعال بودن MySQL در XAMPP
-2. بررسی تنظیمات DB_HOST در فایل `.env`
-3. بررسی پورت (3306 برای XAMPP)
-
-#### ❌ خطای `ECONNREFUSED`
-**راه‌حل:**
-- MySQL را در XAMPP Stop و دوباره Start کنید
-- فایروال را بررسی کنید
-- پورت 3306 را بررسی کنید
-
----
-
-### مشکلات رایج Docker
-
-#### ❌ کانتینرها استارت نمی‌شوند
-```bash
-# بررسی لاگ‌ها
-docker-compose logs
-
-# ری‌استارت کامل
-docker-compose down
-docker-compose up --build -d
-```
-
-#### ❌ دیتابیس متصل نمی‌شود
-```bash
-# بررسی وضعیت سرویس‌ها
-docker-compose ps
-
-# صبر برای آماده شدن MySQL
-docker-compose logs -f mysql
-
-# ری‌استارت دیتابیس
-docker-compose restart mysql
-```
-
-#### ❌ خطای پورت در استفاده
-اگر پورت 3306 توسط XAMPP اشغال شده:
-```bash
-# XAMPP را Stop کنید
-# یا در docker-compose.yml پورت MySQL را تغییر دهید
-```
-
----
-
-## 👨‍💻 توسعه‌دهندگان
-
-### اضافه کردن ویژگی جدید
-
-1. **ایجاد Model** در `models/`
-2. **ایجاد Controller** در `controllers/`
-3. **ایجاد Route** در `routes/`
-4. **اضافه کردن به `App.js`**
-
-### استانداردهای کد
-
-- ✅ استفاده از async/await
-- ✅ اعتبارسنجی ورودی‌ها
-- ✅ مدیریت خطا با try-catch
-- ✅ استفاده از responseHandler برای پاسخ‌ها
-- ✅ کامنت‌گذاری مناسب
-
----
-
-## 📄 مجوز
-
-این پروژه تحت مجوز **MIT** منتشر شده است. برای اطلاعات بیشتر فایل [LICENSE](LICENSE) را ببینید.
-
----
-
-## 🙏 قدردانی
-
-- [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
-- [MySQL](https://www.mysql.com/)
-- [Docker](https://www.docker.com/)
-- [Font Awesome](https://fontawesome.com/)
-- [Vazirmatn Font](https://github.com/rastikerdar/vazirmatn)
-
----
-
-<div align="center">
-
-**☕ ساخته شده با عشق و قهوه ☕**
-
-[بازگشت به بال ↑](#-coffee-shop-management-system)
-
-</div>

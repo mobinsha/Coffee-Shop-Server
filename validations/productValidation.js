@@ -1,103 +1,72 @@
 const { body } = require('express-validator');
 
-// Regex pattern for Persian/English letters, numbers and spaces
-const namePattern = /^[\u0600-\u06FFa-zA-Z0-9\s]+$/;
-// Regex for URL or local path
-const urlPattern = /^(https?:\/\/.+|\/.+)$/;
-// Regex for image extensions
-const imagePattern = /\.(jpeg|jpg|gif|png|webp|svg)$/i;
-
-const validateAddProduct = [
+validateAddProduct = [
     body('imageAddress')
-        .optional()
-        .custom((value) => {
-            if (!value) return true;
-            if (!imagePattern.test(value) && !urlPattern.test(value)) {
-                throw new Error('آدرس تصویر باید یک URL معتبر یا مسیر فایل تصویری باشد (jpg, jpeg, png, gif, webp)');
-            }
-            return true;
-        }),
+        .matches(/\.(jpeg|jpg|gif|png)$/)
+        .withMessage('The address must be an image in jpg, jpeg, gif, or png format.'),
 
     body('name')
         .notEmpty()
-        .withMessage('نام محصول الزامی است').bail()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('نام محصول باید بین 2 تا 100 کاراکتر باشد').bail()
-        .custom((value) => {
-            if (!namePattern.test(value)) {
-                throw new Error('نام محصول فقط می‌تواند شامل حروف فارسی یا انگلیسی، اعداد و فاصله باشد');
-            }
-            return true;
-        }),
+        .withMessage('Name is required.').bail()
+        .isLength({ min: 2, max: 50 })
+        .withMessage('Name must be between 2 and 50 characters long.').bail()
+        .matches(/^[a-zA-Z0-9 ]+$/)
+        .withMessage('Name can only contain letters, numbers, and spaces.'),
+
+    body('shortTitle')
+        .notEmpty()
+        .withMessage('Product name is required.').bail()
+        .isString()
+        .withMessage('Title must be a string.').bail()
+        .isLength({ min: 3 }).withMessage('Title must be at least 3 characters long.').bail()
+        .isLength({ max: 100 }).withMessage('Title must not exceed 100 characters.'),
+
+    body('price')
+        .notEmpty()
+        .withMessage('Product price is required.').bail()
+        .isNumeric().withMessage('Price must be a number.').bail()
+        .isFloat({ gt: 0 }).withMessage('Price must be greater than 0.'),
+
+    body('description')
+        .isString().withMessage('Description must be a string.').bail()
+        .isLength({ min: 5 }).withMessage('Description must be at least 5 characters long.')
+];
+
+validateUpdateProduct = [
+    body('imageAddress')
+        .optional()
+        .matches(/\.(jpeg|jpg|gif|png)$/)
+        .withMessage('The address must be an image in jpg, jpeg, gif, or png format.'),
+
+    body('name')
+        .optional()
+        .isLength({ min: 2, max: 50 })
+        .withMessage('Name must be between 2 and 50 characters long.').bail()
+        .matches(/^[a-zA-Z0-9 ]+$/)
+        .withMessage('Name can only contain letters, numbers, and spaces.'),
 
     body('shortTitle')
         .optional()
         .isString()
-        .withMessage('عنوان کوتاه باید متن باشد').bail()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('عنوان کوتاه باید بین 2 تا 100 کاراکتر باشد'),
-
-    body('price')
-        .notEmpty()
-        .withMessage('قیمت محصول الزامی است').bail()
-        .isNumeric()
-        .withMessage('قیمت باید یک عدد باشد').bail()
-        .isFloat({ gt: 0 })
-        .withMessage('قیمت باید بزرگتر از صفر باشد'),
-
-    body('description')
-        .optional()
-        .isString()
-        .withMessage('توضیحات باید متن باشد').bail()
-        .isLength({ min: 5, max: 500 })
-        .withMessage('توضیحات باید بین 5 تا 500 کاراکتر باشد')
-];
-
-const validateUpdateProduct = [
-    body('imageAddress')
-        .optional()
-        .custom((value) => {
-            if (!value) return true;
-            if (!imagePattern.test(value) && !urlPattern.test(value)) {
-                throw new Error('آدرس تصویر باید یک URL معتبر یا مسیر فایل تصویری باشد (jpg, jpeg, png, gif, webp)');
-            }
-            return true;
-        }),
-
-    body('name')
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('نام محصول باید بین 2 تا 100 کاراکتر باشد').bail()
-        .custom((value) => {
-            if (!namePattern.test(value)) {
-                throw new Error('نام محصول فقط می‌تواند شامل حروف فارسی یا انگلیسی، اعداد و فاصله باشد');
-            }
-            return true;
-        }),
-
-    body('shortTitle')
-        .optional()
-        .isString()
-        .withMessage('عنوان کوتاه باید متن باشد').bail()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('عنوان کوتاه باید بین 2 تا 100 کاراکتر باشد'),
+        .withMessage('Title must be a string.').bail()
+        .isLength({ min: 3 }).withMessage('Title must be at least 3 characters long.').bail()
+        .isLength({ max: 100 }).withMessage('Title must not exceed 100 characters.'),
 
     body('price')
         .optional()
-        .isNumeric()
-        .withMessage('قیمت باید یک عدد باشد').bail()
-        .isFloat({ gt: 0 })
-        .withMessage('قیمت باید بزرگتر از صفر باشد'),
+        .isNumeric().withMessage('Price must be a number.').bail()
+        .isFloat({ gt: 0 }).withMessage('Price must be greater than 0.'),
 
     body('description')
         .optional()
-        .isString()
-        .withMessage('توضیحات باید متن باشد').bail()
-        .isLength({ min: 5, max: 500 })
-        .withMessage('توضیحات باید بین 5 تا 500 کاراکتر باشد')
-];
+        .isString().withMessage('Description must be a string.').bail()
+        .isLength({ min: 5 }).withMessage('Description must be at least 5 characters long.')
+]
+
+
+
 
 module.exports = {
     validateAddProduct,
     validateUpdateProduct
-};
+}

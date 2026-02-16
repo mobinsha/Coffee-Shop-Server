@@ -29,20 +29,10 @@ async function login(req, res, next) {
         const user = await userModel.getUserByUsernameOrEmail(userNameOrEmail)
         const isMatch = await comparePassword(password, user.password)
 
-        if (!isMatch) {
-            return sendResponse(res, 401, 'نام کاربری یا رمز عبور اشتباه است', {});
+        if (isMatch){
+            const token = jwt.sign({id: user.id, permission: user.permission }, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})
+            sendResponse(res, 200, 'Success', {token : token});
         }
-
-        const token = jwt.sign({id: user.id, permission: user.permission }, process.env.JWT_SECRET, {algorithm : 'HS256', expiresIn: '1h'})
-        sendResponse(res, 200, 'ورود با موفقیت انجام شد', {
-            token: token,
-            id: user.id,
-            userName: user.userName,
-            fullName: user.fullName,
-            email: user.email,
-            permission: user.permission,
-            accountStatus: user.accountStatus
-        });
 
     } catch (err) {
         next(err);
@@ -53,7 +43,7 @@ async function deleteUser(req, res, next) {
     const deleteUserId = req.params.id;
     try {
         await userModel.deleteUser(deleteUserId);
-        sendResponse(res, 200, 'کاربر با موفقیت حذف شد');
+        sendResponse(res, 200, 'User successfully deleted');
     } catch (err) {
         next(err);
     }
@@ -63,7 +53,7 @@ async function register(req, res, next) {
     const { userName, password, email, fullName, phoneNumber, permission } = req.body;
     try {
         await userModel.addUser({ userName, password, email, fullName, phoneNumber, permission });
-        sendResponse(res, 201, 'کاربر با موفقیت اضافه شد');
+        sendResponse(res, 201, 'User successfully added');
     } catch (err) {
         next(err);
     }
@@ -75,7 +65,7 @@ async function userUpdate(req, res, next) {
 
     try {
         await userModel.userUpdate(userId, userData);
-        sendResponse(res, 200, 'کاربر با موفقیت بروزرسانی شد');
+        sendResponse(res, 200, 'User successfully updated');
     } catch (err) {
         next(err);
     }

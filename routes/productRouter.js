@@ -7,9 +7,9 @@ const {authorize} = require("../middlewares/authorize");
 const {authenticateToken} = require("../middlewares/authenticateToken");
 
 
-router.get('/', productController.getAllProduct)
+router.get('/', authenticateToken, authorize(['public', 'admin', 'user']), productController.getAllProduct)
 
-router.get('/:id', authenticateToken, authorize(['admin', 'user']), productController.getProductById)
+router.get('/:id', authenticateToken, authorize('admin'), productController.getProductById)
 
 router.post('/add', authenticateToken, authorize('admin'), validateAddProduct, validationResults, productController.addProduct)
 
