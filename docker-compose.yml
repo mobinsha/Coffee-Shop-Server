@@ -1,0 +1,89 @@
+# Coffee Shop - Docker Compose Configuration
+# این فایل برای اجرای پروژه با Docker طراحی شده
+# برای استفاده از XAMPP لطفاً از docker-compose.local.yml استفاده نکنید
+
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: coffee-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root123}
+      MYSQL_DATABASE: ${DB_NAME:-coffeeshop}
+      MYSQL_USER: ${DB_USER:-coffee_user}
+      MYSQL_PASSWORD: ${DB_PASS:-coffee_pass}
+    ports:
+      - "${DB_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - coffee-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Node.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: coffee-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${PORT:-3000}
+      # اتصال به MySQL داکری
+      DB_HOST: mysql
+      DB_USER: ${DB_USER:-coffee_user}
+      DB_PASS: ${DB_PASS:-coffee_pass}
+      DB_NAME: ${DB_NAME:-coffeeshop}
+      DB_PORT: 3306
+      # JWT Configuration
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      # Startup configuration
+      STARTUP: ${STARTUP:-false}
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./public:/app/public
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - coffee-network
+    command: sh -c "npm run docker:init && npm start"
+
+  # phpMyAdmin (optional - برای مدیریت دیتابیس)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: coffee-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root123}
+    ports:
+      - "${PHPMYADMIN_PORT:-8080}:80"
+    depends_on:
+      - mysql
+    networks:
+      - coffee-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  coffee-network:
+    driver: bridge

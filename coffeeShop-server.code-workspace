@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "coffeeShop-server",
+			"path": ".."
+		},
+		{
+			"name": "database",
+			"path": "../../../../../../media/mobin/New Volume1/IDE's/vsCode/coffeeShopServer/Coffee-Shop-Server/database"
+		}
+	],
+	"settings": {}
+}
